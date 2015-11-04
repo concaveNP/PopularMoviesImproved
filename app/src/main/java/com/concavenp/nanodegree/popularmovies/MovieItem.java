@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by dave on 11/2/2015.
  */
-public class MovieEntry {
+public class MovieItem {
     /*
         {
             "adult":false,
@@ -40,7 +40,7 @@ public class MovieEntry {
     double mVoteAverage;
     int mVoteCount;
 
-    public MovieEntry(
+    public MovieItem(
             boolean adult,
             String backdropPath,
             List<Integer> genreIds,

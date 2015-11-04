@@ -16,5 +16,5 @@
     <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/gridView" />
+        android:id="@+id/main_Movies_GridView" />
 </RelativeLayout>
