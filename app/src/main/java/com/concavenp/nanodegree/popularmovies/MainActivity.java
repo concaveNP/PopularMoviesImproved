@@ -29,15 +29,26 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         List<MovieItem> model = new ArrayList<>();
-        model.add(new MovieItem().set???().set???())
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
+        model.add(new MovieItem());
 
         GridView gridView = (GridView)findViewById(R.id.main_Movies_GridView);
-        MovieAdapter movieAdapter = new MovieAdalpter(getApplicationContext(), R.layout.movie_item, model);
+        MovieAdapter movieAdapter = new MovieAdapter(getApplicationContext(), R.layout.movie_item, model);
+        gridView.setAdapter(movieAdapter);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
+        /*
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -55,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
+        */
     }
 
     @Override

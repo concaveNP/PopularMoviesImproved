@@ -40,6 +40,11 @@ public class MovieItem {
     double mVoteAverage;
     int mVoteCount;
 
+    public MovieItem() {
+        mBackdropPath = "/dkMD5qlogeRMiEixC4YNPUvax2T.jpg";
+
+    }
+
     public MovieItem(
             boolean adult,
             String backdropPath,
