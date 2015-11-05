@@ -8,12 +8,10 @@
     tools:showIn="@layout/activity_main"
     tools:context=".MainActivity">
 
-
     <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/main_Movies_GridView"
-        android:numColumns="2"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="false" />
+        android:numColumns="2" />
+
 </RelativeLayout>

@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -45,10 +47,9 @@ public class MovieAdapter extends ArrayAdapter<MovieItem> {
 
         result = inflator.inflate(R.layout.movie_item, null);
         ImageButton movieButton = (ImageButton)result.findViewById(R.id.movie_ImageButton);
-        //TextView movieTitle = (TextView) result.findViewById(R.id.movie_TextView);
 
+        Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185/jjBgi2r5cRt36xF6iNUEhzscEcb.jpg").into(movieButton);
         movieButton.setImageResource(R.drawable.jurasic_world);
-        //movieTitle.setText("Fight Club");
 
         return result;
     }
