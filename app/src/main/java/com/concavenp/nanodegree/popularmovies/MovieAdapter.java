@@ -45,10 +45,10 @@ public class MovieAdapter extends ArrayAdapter<MovieItem> {
 
         result = inflator.inflate(R.layout.movie_item, null);
         ImageButton movieButton = (ImageButton)result.findViewById(R.id.movie_ImageButton);
-        TextView movieTitle = (TextView) result.findViewById(R.id.movie_TextView);
+        //TextView movieTitle = (TextView) result.findViewById(R.id.movie_TextView);
 
-        movieButton.setImageResource(R.drawable.fight_club);
-        movieTitle.setText("Fight Club");
+        movieButton.setImageResource(R.drawable.jurasic_world);
+        //movieTitle.setText("Fight Club");
 
         return result;
     }
