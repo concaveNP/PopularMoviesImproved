@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * Created by dave on 11/2/2015.
  */
-public class MovieAdapter extends ArrayAdapter<MovieItem> {
+public class MovieAdapter extends ArrayAdapter<MovieItems> {
 
     /**
      * The logging tag string to be associated with log data for this class
@@ -32,9 +31,9 @@ public class MovieAdapter extends ArrayAdapter<MovieItem> {
     /**
      * The model data that this adapter will provide to the associated view
      */
-    private final List<MovieItem> mModel;
+    private final List<MovieItems> mModel;
 
-    public MovieAdapter(Context context, int resource, List<MovieItem> model) {
+    public MovieAdapter(Context context, int resource, List<MovieItems> model) {
         super(context, resource, model);
 
         mModel = model;
@@ -55,7 +54,7 @@ public class MovieAdapter extends ArrayAdapter<MovieItem> {
         ImageButton movieButton = (ImageButton)result.findViewById(R.id.movie_ImageButton);
 
         // Get the movie poster UID from the GSON object
-        String posterUID =
+        //String posterUID =
         Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185/jjBgi2r5cRt36xF6iNUEhzscEcb.jpg").into(movieButton);
         movieButton.setImageResource(R.drawable.jurasic_world);
 

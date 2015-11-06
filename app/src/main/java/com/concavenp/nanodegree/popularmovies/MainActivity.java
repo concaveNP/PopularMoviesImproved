@@ -13,7 +13,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<MovieItem> model = new ArrayList<>();
+        List<MovieItems> model = new ArrayList<>();
         GridView gridView = (GridView)findViewById(R.id.main_Movies_GridView);
         MovieAdapter movieAdapter = new MovieAdapter(getApplicationContext(), R.layout.movie_item, model);
         gridView.setAdapter(movieAdapter);
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 Gson gson = new Gson();
-                gson.f
             }
         }, new Response.ErrorListener() {
 
