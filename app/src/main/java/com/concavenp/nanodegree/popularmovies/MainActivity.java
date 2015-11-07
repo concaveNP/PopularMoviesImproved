@@ -3,21 +3,22 @@ package com.concavenp.nanodegree.popularmovies;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
+
+    /**
+     * The logging tag string to be associated with log data for this class
+     */
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     String mSortOrder = "popularity.desc";
 
@@ -28,45 +29,34 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<MovieItem> model = new ArrayList<>();
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-        model.add(new MovieItem());
-
         GridView gridView = (GridView)findViewById(R.id.main_Movies_GridView);
-        MovieAdapter movieAdapter = new MovieAdapter(getApplicationContext(), R.layout.movie_item, model);
+        final MovieAdapter movieAdapter = new MovieAdapter(getApplicationContext(), R.layout.movie_item, new MovieItems());
         gridView.setAdapter(movieAdapter);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
-        /*
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
             @Override
-            public void onResponse(String response) {
-                // Display the first 500 characters of the response string.
-                mTextView.setText("Response is: " + response.substring(0, 500));
+            public void onResponse(MovieItems response) {
+                // First clear out any old data
+                movieAdapter.clear();
+
+                // Add the new data
+                movieAdapter.add(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didn't work!");
+                // TODO Auto-generated method stub
+                Log.d(TAG, "some error");
             }
         });
 
         // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-        */
+        queue.add(request);
     }
 
     @Override
