@@ -2,61 +2,25 @@ package com.concavenp.nanodegree.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-
-public class MainActivity extends AppCompatActivity {
+/**
+ * References:
+ *      Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
+ *      Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
+ */
+public class MainActivity extends AppCompatActivity implements MovieListingFragment.OnFragmentInteractionListener {
 
     /**
      * The logging tag string to be associated with log data for this class
      */
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    String mSortOrder = "popularity.desc";
-
-    @Override
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        GridView gridView = (GridView)findViewById(R.id.main_Movies_GridView);
-        final MovieAdapter movieAdapter = new MovieAdapter(getApplicationContext(), R.layout.movie_item, new MovieItems());
-        gridView.setAdapter(movieAdapter);
-
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
-
-        // Request a string response from the provided URL.
-        GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
-            @Override
-            public void onResponse(MovieItems response) {
-                // First clear out any old data
-                movieAdapter.clear();
-
-                // Add the new data
-                movieAdapter.add(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "some error");
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(request);
     }
 
     @Override
@@ -79,5 +43,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 }
