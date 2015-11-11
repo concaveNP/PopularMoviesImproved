@@ -2,11 +2,10 @@ package com.concavenp.nanodegree.popularmovies;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +33,7 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
     public MovieAdapter(Context context, int resource, MovieItems model) {
         super(context, resource, model.getResults());
 
+        // This class is the model data that will be used by this adapter class
         mModel = model;
     }
 
@@ -46,26 +46,43 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
         super.addAll(movieItems.getResults());
     }
 
+    /**
+     * Getter for the view of one of the items in our data model.  This overridden method will
+     * create an ImageView, if required, and populate via Picasso. The URL for the movie poster is
+     * built from the {@code MovieItems} class that we populated via GSON.
+     * <p>
+     * Reference:
+     * - This reference allowed me to see that my code needed the "setAdjustViewBounds(true)" in
+     * order to resize the posters correctly.  Its took a lot of time to find this one out, but I
+     * say someone mention it within this post:
+     * http://stackoverflow.com/questions/21889735/resize-image-to-full-width-and-variable-height-with-picasso/22009875#22009875
+     * <p>
+     * {@inheritDoc}
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d(TAG, "Position: " + position);
 
-        // The resulting value that will be returned
-        View result = null;
+        ImageView imageView;
 
-        // TODO: 11/5/2015 - use a ViewHolder for caching
-
-        LayoutInflater inflator = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        result = inflator.inflate(R.layout.movie_item, null);
-        ImageButton movieButton = (ImageButton)result.findViewById(R.id.movie_ImageButton);
+        // Check to see if this view is being recycled and reuse it if so, otherwise create a new one.
+        if (convertView == null) {
+            imageView = new ImageView(getContext());
+            imageView.setScaleType(ImageView.ScaleType.FIT_START);
+            imageView.setAdjustViewBounds(true);
+        }
+        else {
+            // This view is being recycled
+            imageView = (ImageView) convertView;
+        }
 
         // Get the movie poster UID from the GSON object
         String posterURL = BASE_URL + mModel.getResults().get(position).getPoster_path();
-        Picasso.with(getContext()).load(posterURL).into(movieButton);
+        Picasso.with(getContext()).load(posterURL).into(imageView);
 
-        return result;
+        return imageView;
     }
+
 
 }
 
