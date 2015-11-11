@@ -91,20 +91,15 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
 
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
-// don't know what the toolbar is yet
-//
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
         mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
-        mAdapter = new MovieAdapter(getContext(), R.layout.movie_item, new MovieItems());
+        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems());
         mGridView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mGridView.setOnItemClickListener(this);
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url ="http://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
         // Request a string response from the provided URL.
@@ -169,7 +164,7 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        void onFragmentInteraction(String id);
     }
 
 }
