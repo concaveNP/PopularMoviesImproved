@@ -1,11 +1,14 @@
 package com.concavenp.nanodegree.popularmovies;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -60,7 +63,7 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
      * {@inheritDoc}
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Log.d(TAG, "Position: " + position);
 
         ImageView imageView;
@@ -70,6 +73,8 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
             imageView = new ImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.FIT_START);
             imageView.setAdjustViewBounds(true);
+            imageView.setClickable(true);
+            imageView.setLongClickable(true);
         }
         else {
             // This view is being recycled
@@ -79,6 +84,17 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
         // Get the movie poster UID from the GSON object
         String posterURL = BASE_URL + mModel.getResults().get(position).getPoster_path();
         Picasso.with(getContext()).load(posterURL).into(imageView);
+
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // Put out the movie title to the user
+                Toast.makeText(getContext(),mModel.getResults().get(position).getTitle(), Toast.LENGTH_SHORT).show();
+
+                // This ImageView has consumed the long click
+                return true;
+            }
+        });
 
         return imageView;
     }

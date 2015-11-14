@@ -2,14 +2,14 @@ package com.concavenp.nanodegree.popularmovies;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.android.volley.RequestQueue;
@@ -92,7 +92,34 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
         mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
-        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems());
+        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems()) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View result = super.getView(position, convertView, parent);
+
+                result.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "DOH!" );
+
+                        // Create fragment and give it an argument specifying the article it should show
+                        MovieDetailsFragment detailsFragment = MovieDetailsFragment.newInstance("param1", "param2");
+
+                        FragmentTransaction transaction = MovieListingFragment.this.getFragmentManager().beginTransaction();
+
+                        // Replace whatever is in the fragment_container view with this fragment,
+                        // and add the transaction to the back stack so the user can navigate back
+                        transaction.replace(R.id.main_content, detailsFragment);
+                        transaction.addToBackStack(null);
+
+                        // Commit the transaction
+                        transaction.commit();
+                    }
+                });
+
+                return result;
+            }
+        };
         mGridView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
