@@ -3,12 +3,15 @@ package com.concavenp.nanodegree.popularmovies;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -20,14 +23,13 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class MovieDetailsFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,16 +37,14 @@ public class MovieDetailsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param param1 Parameter that contains the model data to be displayed.
      * @return A new instance of fragment MovieDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MovieDetailsFragment newInstance(String param1, String param2) {
+    public static MovieDetailsFragment newInstance(String param1) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +58,6 @@ public class MovieDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -67,6 +66,22 @@ public class MovieDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_movie_details, container, false);
+
+        Gson gson = new Gson();
+        MovieItems.MovieItem model = gson.fromJson(mParam1, MovieItems.MovieItem.class);
+
+        ImageView posterImageView = (ImageView) result.findViewById(R.id.poster_ImageView);
+        TextView titleTextView = (TextView) result.findViewById(R.id.title_TextView);
+        TextView populatrityTextView = (TextView) result.findViewById(R.id.popularity_TextView);
+        TextView synopsisTextView = (TextView) result.findViewById(R.id.synopsis_TextView);
+
+        // Get the movie poster UID from the GSON object
+        String posterURL = getContext().getResources().getString(R.string.base_url_image_retrieval) + model.getPoster_path();
+        Picasso.with(getContext()).load(posterURL).into(posterImageView);
+
+        titleTextView.setText(model.getTitle());
+        populatrityTextView.setText(Double.toString(model.getPopularity()));
+       synopsisTextView.setText(model.getOverview());
 
 /*
         FloatingActionButton fab = (FloatingActionButton) result.findViewById(R.id.fab);

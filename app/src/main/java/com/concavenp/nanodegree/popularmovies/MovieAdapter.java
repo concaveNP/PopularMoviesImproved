@@ -1,8 +1,6 @@
 package com.concavenp.nanodegree.popularmovies;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +21,23 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
     private static final String TAG = MovieAdapter.class.getSimpleName();
 
     /**
-     * The base URL that will be used to query The Movie DB web service
-     */
-    // TODO: 11/5/2015 - Make the code smart enough to choose was width size to use
-    private static final String BASE_URL = "http://image.tmdb.org/t/p/w185";
-
-    /**
      * The model data that this adapter will provide to the associated view
      */
     private MovieItems mModel;
 
+    /**
+     * Constructor that takes ???????????????
+     *
+     *
+     * @param context
+     * @param resource
+     * @param model
+     */
     public MovieAdapter(Context context, int resource, MovieItems model) {
         super(context, resource, model.getResults());
 
         // This class is the model data that will be used by this adapter class
-        mModel = model;
+        setModel(model);
     }
 
     /**
@@ -47,6 +47,33 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
      */
     public void add(MovieItems movieItems) {
         super.addAll(movieItems.getResults());
+    }
+
+    public MovieItems getModel() {
+        return mModel;
+    }
+
+    public void setModel(MovieItems model) {
+        this.mModel = model;
+    }
+
+    /**
+     * Convenience method to get one specified {@code MovieItem} from the model.
+     *
+     * @param index The index of desired item
+     * @return A {@code MovieItem}
+     */
+    public MovieItems.MovieItem getModelItem(int index) {
+        MovieItems.MovieItem result;
+
+        if (getModel() != null) {
+            result = getModel().getResults().get(index);
+        }
+        else {
+            result = new MovieItems.MovieItem();
+        }
+
+        return result;
     }
 
     /**
@@ -82,14 +109,17 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
         }
 
         // Get the movie poster UID from the GSON object
-        String posterURL = BASE_URL + mModel.getResults().get(position).getPoster_path();
-        Picasso.with(getContext()).load(posterURL).into(imageView);
+        String poster = getModelItem(position).getPoster_path();
+        if (poster != null) {
+            String posterURL = getContext().getResources().getString(R.string.base_url_image_retrieval) + poster;
+            Picasso.with(getContext()).load(posterURL).into(imageView);
+        }
 
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 // Put out the movie title to the user
-                Toast.makeText(getContext(),mModel.getResults().get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),getModelItem(position).getTitle(), Toast.LENGTH_SHORT).show();
 
                 // This ImageView has consumed the long click
                 return true;
@@ -98,7 +128,6 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
 
         return imageView;
     }
-
 
 }
 

@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmovies.dummy.DummyContent;
+import com.google.gson.Gson;
 
 /**
  * A fragment representing a list of MovieItem(s).
@@ -94,7 +95,7 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
         mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems()) {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
                 View result = super.getView(position, convertView, parent);
 
                 result.setOnClickListener(new View.OnClickListener() {
@@ -102,8 +103,11 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
                     public void onClick(View v) {
                         Log.d(TAG, "DOH!" );
 
+                        Gson gson = new Gson();
+                        String json = gson.toJson(getModelItem(position));
+
                         // Create fragment and give it an argument specifying the article it should show
-                        MovieDetailsFragment detailsFragment = MovieDetailsFragment.newInstance("param1", "param2");
+                        MovieDetailsFragment detailsFragment = MovieDetailsFragment.newInstance(json);
 
                         FragmentTransaction transaction = MovieListingFragment.this.getFragmentManager().beginTransaction();
 

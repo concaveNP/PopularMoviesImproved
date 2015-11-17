@@ -2,6 +2,9 @@
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
 
+    <!-- The base URL that will be used to query The Movie DB web service -->
+    <string name="base_url_image_retrieval">http://image.tmdb.org/t/p/w185</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
