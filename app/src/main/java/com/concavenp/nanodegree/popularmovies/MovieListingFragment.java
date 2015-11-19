@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,48 +88,31 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
         mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems()) {
+
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
+
                 View result = super.getView(position, convertView, parent);
 
                 result.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        Log.d(TAG, "DOH!" );
+                    public void onClick(View view) {
 
+                        // Convert the GSON object back to a JSON string in order to pass to the activity
                         Gson gson = new Gson();
                         String json = gson.toJson(getModelItem(position));
 
-
-                        Context context = v.getContext();
+                        // Create and start the details activity along with passing it the Movie Item details information via JSON string
+                        Context context = view.getContext();
                         Intent intent = new Intent(context, MovieDetailsActivity.class);
                         intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
-
                         context.startActivity(intent);
-
-                        /*
-
-                        // Create fragment and give it an argument specifying the article it should show
-                        MovieDetailsFragment detailsFragment = MovieDetailsFragment.newInstance(json);
-
-                        FragmentTransaction transaction = MovieListingFragment.this.getFragmentManager().beginTransaction();
-
-                        // Replace whatever is in the fragment_container view with this fragment,
-                        // and add the transaction to the back stack so the user can navigate back
-                        transaction.replace(R.id.main_content, detailsFragment);
-                        transaction.addToBackStack(null);
-
-                        // Commit the transaction
-                        transaction.commit();
-
-                        */
                     }
                 });
 
@@ -151,7 +133,7 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
             @Override
             public void onResponse(MovieItems response) {
                 // First clear out any old data
-                mAdapter.clear();
+           //     mAdapter.clear();
 
                 // Add the new data
                 mAdapter.add(response);

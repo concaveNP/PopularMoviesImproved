@@ -12,7 +12,7 @@ import android.view.MenuItem;
  *      Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
  *      Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
  */
-public class MainActivity extends AppCompatActivity implements MovieListingFragment.OnFragmentInteractionListener, MovieDetailsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements MovieListingFragment.OnFragmentInteractionListener {
 
     /**
      * The logging tag string to be associated with log data for this class
@@ -61,8 +61,4 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
 
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
