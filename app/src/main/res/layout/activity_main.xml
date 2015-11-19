@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_movieitem_grid" />
 
-    </FrameLayout>
+    /FrameLayout>
 -->
 
 </android.support.design.widget.CoordinatorLayout>
