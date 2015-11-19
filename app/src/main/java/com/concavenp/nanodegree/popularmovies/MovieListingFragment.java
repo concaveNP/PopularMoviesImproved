@@ -1,6 +1,8 @@
 package com.concavenp.nanodegree.popularmovies;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -106,6 +108,15 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
                         Gson gson = new Gson();
                         String json = gson.toJson(getModelItem(position));
 
+
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, MovieDetailsActivity.class);
+                        intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
+
+                        context.startActivity(intent);
+
+                        /*
+
                         // Create fragment and give it an argument specifying the article it should show
                         MovieDetailsFragment detailsFragment = MovieDetailsFragment.newInstance(json);
 
@@ -118,6 +129,8 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
 
                         // Commit the transaction
                         transaction.commit();
+
+                        */
                     }
                 });
 
