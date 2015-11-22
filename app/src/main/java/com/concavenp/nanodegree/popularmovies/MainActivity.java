@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        setSupportActionBar(toolbar);
 
-       // Create an instance of ExampleFragment
+       // Create an instance of movie listing fragment
        MovieListingFragment fragment = MovieListingFragment.newInstance("","");
 
        // Add the fragment to the 'fragment_container' FrameLayout
