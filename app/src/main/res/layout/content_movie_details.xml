@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -14,45 +14,99 @@
     tools:context="com.concavenp.nanodegree.popularmovies.MovieDetailsActivity"
     tools:showIn="@layout/activity_movie_details">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <GridLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/poster_ImageView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="32dp" />
+        android:id="@+id/gridLayout"
+        android:columnCount="2"
+        android:background="@android:color/holo_green_light">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/title_TextView"
-        android:layout_alignTop="@+id/poster_ImageView"
-        android:layout_toRightOf="@+id/poster_ImageView"
-        android:layout_toEndOf="@+id/poster_ImageView" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/poster_ImageView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_column="0"
+            android:background="@android:color/holo_blue_light"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/popularity_TextView"
-        android:layout_below="@+id/title_TextView"
-        android:layout_alignLeft="@+id/title_TextView"
-        android:layout_alignStart="@+id/title_TextView" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/details_Layout"
+            android:layout_alignTop="@+id/poster_ImageView"
+            android:layout_below="@+id/poster_ImageView"
+            android:layout_toRightOf="@+id/poster_ImageView"
+            android:layout_column="1"
+            android:background="@android:color/holo_orange_light">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/title_TextView"/>
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px"
+                android:id="@+id/popularity_Space"
+                android:layout_below="@+id/title_TextView"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/popularity_Space"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/popularity_label_string"
+                android:id="@+id/popularity_Label_TextView"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/popularity_TextView"
+                android:layout_alignTop="@+id/popularity_Label_TextView"
+                android:layout_toRightOf="@+id/popularity_Label_TextView"
+                android:layout_toEndOf="@+id/popularity_Label_TextView"/>
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px"
+                android:id="@+id/votes_Space"
+                android:layout_below="@+id/popularity_TextView"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_below="@+id/votes_Space"
+                android:text="@string/votes_label_string"
+                android:id="@+id/votes_Label_TextView"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Medium Text"
+                android:id="@+id/votes_TextView"
+                android:layout_alignTop="@+id/votes_Label_TextView"
+                android:layout_toRightOf="@+id/votes_Label_TextView"
+                android:layout_toEndOf="@+id/votes_Label_TextView"/>
+
+        </RelativeLayout>
+    </GridLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_margin="@dimen/details_margin"
         android:text="Small Text"
         android:id="@+id/synopsis_TextView"
-        android:layout_below="@+id/poster_ImageView"
+        android:layout_below="@+id/gridLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

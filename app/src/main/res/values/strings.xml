@@ -4,8 +4,11 @@
 
     <!-- The base URL that will be used to query The Movie DB web service -->
     <string name="base_url_image_retrieval">http://image.tmdb.org/t/p/w185</string>
+    <string name="base_url_backdrop_image_retrieval">http://image.tmdb.org/t/p/w500</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_movie_details">MovieDetailsActivity</string>
+    <string name="popularity_label_string">Popularity:</string>
+    <string name="votes_label_string">Votes:</string>
 </resources>

@@ -44,7 +44,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         ImageView posterImageView = (ImageView) findViewById(R.id.poster_ImageView);
         TextView titleTextView = (TextView) findViewById(R.id.title_TextView);
-        TextView populatrityTextView = (TextView) findViewById(R.id.popularity_TextView);
+        TextView popularityTextView = (TextView) findViewById(R.id.popularity_TextView);
+        TextView votesTextView = (TextView) findViewById(R.id.votes_TextView);
         TextView synopsisTextView = (TextView) findViewById(R.id.synopsis_TextView);
         ImageView backdropImageView = (ImageView) findViewById(R.id.movie_details_backdrop);
 
@@ -53,11 +54,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Picasso.with(this).load(posterURL).into(posterImageView);
 
         // Get the movie backdrop UID from the GSON object
-        String backdropURL = getResources().getString(R.string.base_url_image_retrieval) + model.getBackdrop_path();
+        String backdropURL = getResources().getString(R.string.base_url_backdrop_image_retrieval) + model.getBackdrop_path();
         Picasso.with(this).load(backdropURL).into(backdropImageView);
 
-        titleTextView.setText(model.getTitle());
-        populatrityTextView.setText(Double.toString(model.getPopularity()));
+        String year = model.getRelease_date().substring(0,4);
+        titleTextView.setText(model.getTitle() + " (" + year + ")");
+
+        Long longPopularity = Math.round(model.getPopularity());
+        Integer popularity = longPopularity.intValue();
+        popularityTextView.setText(" " + popularity.toString() + "%");
+
+        Integer votes = model.getVote_Count();
+        Long longVotes = Math.round(model.getVote_average());
+        votesTextView.setText(" " + longVotes.toString() + " (average of " + votes.toString() + " votes)");
+
         synopsisTextView.setText(model.getOverview());
     }
 
