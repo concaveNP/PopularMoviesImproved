@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+
 public class MovieDetailsActivity extends AppCompatActivity {
 
     public static final String EXTRA_DATA = "json_movie_item";
@@ -64,9 +66,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Integer popularity = longPopularity.intValue();
         popularityTextView.setText(" " + popularity.toString() + "%");
 
-        Integer votes = model.getVote_Count();
-        Long longVotes = Math.round(model.getVote_average());
-        votesTextView.setText(" " + longVotes.toString() + " (average of " + votes.toString() + " votes)");
+        Integer votes = model.getVote_count();
+        String formattedVoteAverage = new DecimalFormat("#0.0").format(model.getVote_average());
+        votesTextView.setText(" " + formattedVoteAverage + " of 10 (" + votes.toString() + " votes)");
 
         synopsisTextView.setText(model.getOverview());
     }

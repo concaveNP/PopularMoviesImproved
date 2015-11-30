@@ -23,7 +23,7 @@ public class MovieItems {
         private String title;
         private boolean video;
         private double vote_average;
-        private int vote_Count;
+        private int vote_count;
 
         public boolean isAdult() {
             return adult;
@@ -77,8 +77,8 @@ public class MovieItems {
             return vote_average;
         }
 
-        public int getVote_Count() {
-            return vote_Count;
+        public int getVote_count() {
+            return vote_count;
         }
 
     }
