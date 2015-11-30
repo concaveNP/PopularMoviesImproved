@@ -28,6 +28,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.movie_deatils_toolbar);
         setSupportActionBar(toolbar);
 
+        // Don't show a title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // This activity is not the home, so show the back arrow.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*
+        * Put this in for the next iteration of this app in order to allow voting.
+        *
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +45,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        */
+
 
         // Translate JSON into GSON object
         Intent intent = getIntent();
