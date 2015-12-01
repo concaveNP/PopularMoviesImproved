@@ -2,11 +2,8 @@ package com.concavenp.nanodegree.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +43,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             }
         });
         */
-
 
         // Translate JSON into GSON object
         Intent intent = getIntent();

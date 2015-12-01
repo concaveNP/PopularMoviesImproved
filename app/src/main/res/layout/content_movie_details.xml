@@ -18,8 +18,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/gridLayout"
-        android:columnCount="2"
-        android:background="@android:color/holo_green_light">
+        android:columnCount="2">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -28,8 +27,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_column="0"
-            android:background="@android:color/holo_blue_light"/>
+            android:layout_column="0"/>
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -39,7 +37,7 @@
             android:layout_below="@+id/poster_ImageView"
             android:layout_toRightOf="@+id/poster_ImageView"
             android:layout_column="1"
-            android:background="@android:color/holo_orange_light">
+            android:layout_margin="@dimen/fab_margin">
 
             <TextView
                 android:layout_width="fill_parent"
