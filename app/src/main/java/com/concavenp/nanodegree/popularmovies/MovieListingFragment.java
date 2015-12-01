@@ -1,15 +1,16 @@
 package com.concavenp.nanodegree.popularmovies;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.android.volley.RequestQueue;
@@ -17,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmovies.dummy.DummyContent;
+import com.google.gson.Gson;
 
 /**
  * A fragment representing a list of MovieItem(s).
@@ -86,13 +88,37 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
         mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
-        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems());
+        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems()) {
+
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+
+                View result = super.getView(position, convertView, parent);
+
+                result.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // Convert the GSON object back to a JSON string in order to pass to the activity
+                        Gson gson = new Gson();
+                        String json = gson.toJson(getModelItem(position));
+
+                        // Create and start the details activity along with passing it the Movie Item details information via JSON string
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, MovieDetailsActivity.class);
+                        intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
+                        context.startActivity(intent);
+                    }
+                });
+
+                return result;
+            }
+        };
         mGridView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
@@ -100,14 +126,14 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        String url ="http://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
+        String url = "https://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
         // Request a string response from the provided URL.
         GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
             @Override
             public void onResponse(MovieItems response) {
                 // First clear out any old data
-                mAdapter.clear();
+           //     mAdapter.clear();
 
                 // Add the new data
                 mAdapter.add(response);
