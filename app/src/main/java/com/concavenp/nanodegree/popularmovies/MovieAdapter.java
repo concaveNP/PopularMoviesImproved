@@ -1,6 +1,7 @@
 package com.concavenp.nanodegree.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -84,7 +86,7 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
      * Reference:
      * - This reference allowed me to see that my code needed the "setAdjustViewBounds(true)" in
      * order to resize the posters correctly.  Its took a lot of time to find this one out, but I
-     * say someone mention it within this post:
+     * saw someone mention it within this post:
      * http://stackoverflow.com/questions/21889735/resize-image-to-full-width-and-variable-height-with-picasso/22009875#22009875
      * <p>
      * {@inheritDoc}
@@ -123,6 +125,22 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
 
                 // This ImageView has consumed the long click
                 return true;
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Convert the GSON object back to a JSON string in order to pass to the activity
+                Gson gson = new Gson();
+                String json = gson.toJson(getModelItem(position));
+
+                // Create and start the details activity along with passing it the Movie Item details information via JSON string
+                Context context = view.getContext();
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+                intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
+                context.startActivity(intent);
             }
         });
 

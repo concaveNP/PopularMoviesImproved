@@ -1,5 +1,6 @@
 package com.concavenp.nanodegree.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,8 +48,12 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            // Create and start the details activity along with passing it the Movie Item details information via JSON string
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
+
             return true;
         }
 
@@ -59,5 +64,8 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
     public void onFragmentInteraction(String id) {
 
     }
+
+
+
 
 }
