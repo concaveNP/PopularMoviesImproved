@@ -18,7 +18,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/gridLayout"
-        android:columnCount="2">
+        android:columnCount="2"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:layout_columnSpan="2"
+            android:id="@+id/title_TextView"
+            android:layout_marginBottom="@dimen/details_margin"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -34,28 +44,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/details_Layout"
             android:layout_alignTop="@+id/poster_ImageView"
-            android:layout_below="@+id/poster_ImageView"
             android:layout_toRightOf="@+id/poster_ImageView"
             android:layout_column="1"
-            android:layout_margin="@dimen/fab_margin">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
-                android:id="@+id/title_TextView"/>
-
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px"
-                android:id="@+id/popularity_Space"
-                android:layout_below="@+id/title_TextView"/>
+            android:layout_marginLeft="@dimen/details_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/popularity_Space"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/popularity_label_string"
                 android:id="@+id/popularity_Label_TextView"/>
@@ -100,11 +95,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_margin="@dimen/details_margin"
         android:text="Small Text"
         android:id="@+id/synopsis_TextView"
         android:layout_below="@+id/gridLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/details_margin"/>
 
 </RelativeLayout>
