@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
             // Create and start the details activity along with passing it the Movie Item details information via JSON string
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
 
-            // For now, give the activity some extra parameters that will tell it to use a specific PreferenceFragment when starting up.  These lines can be removed when the user preference settings gets more complex and require displaying a preference headers to the user.
+            // For now, give the activity some extra parameters that will tell it to use a specific
+            // PreferenceFragment when starting up.  These lines can be removed when the user
+            // preference settings gets more complex and require displaying preference headers to the user.
             intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
             intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true);
 

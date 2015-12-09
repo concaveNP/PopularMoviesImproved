@@ -1,8 +1,10 @@
 package com.concavenp.nanodegree.popularmovies;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.Preference;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +26,7 @@ import com.android.volley.toolbox.Volley;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class MovieListingFragment extends Fragment {
+public class MovieListingFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * The logging tag string to be associated with log data for this class
@@ -100,7 +102,7 @@ public class MovieListingFragment extends Fragment {
             @Override
             public void onResponse(MovieItems response) {
                 // First clear out any old data
-           //     mAdapter.clear();
+                mAdapter.clear();
 
                 // Add the new data
                 mAdapter.add(response);
@@ -134,6 +136,18 @@ public class MovieListingFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getResources().getString(R.string.sorting_preference_type_key))) {
+
+            String value = sharedPreferences.getString(key, "popularity.desc");
+
+            if (!mSortOrder.equals(value)) {
+                mSortOrder = value;
+            }
+        }
     }
 
     /**
