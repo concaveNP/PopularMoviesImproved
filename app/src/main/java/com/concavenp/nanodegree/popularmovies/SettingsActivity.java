@@ -24,6 +24,9 @@ import android.support.v4.app.NavUtils;
 import java.util.List;
 
 /**
+ * This class started as generated code from Android Studio and adapted to the
+ * Popular Movies app.
+ *
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
  * settings are split by category, with category headers shown to the left of
@@ -198,7 +201,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+
+                // Get the activity
+                NavUtils.navigateUpFromSameTask(getActivity());
+
+                //startActivity(new Intent(getActivity(), SettingsActivity.class));
+
                 return true;
             }
             return super.onOptionsItemSelected(item);
