@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * This class started as generated code from Android Studio and adapted to the
  * Popular Movies app.  Essentially keeping the general settings fragment.  I liked the idea
- * of having a foundation in place for adding more preference items later on.
+ * of having a foundation in place for adding more preference items later on for part II.
  *
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
