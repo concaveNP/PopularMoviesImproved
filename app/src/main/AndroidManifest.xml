@@ -9,6 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:fullBackupContent="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -22,7 +23,6 @@
         <activity
             android:name=".MovieDetailsActivity"
             android:label="@string/title_activity_movie_details"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -30,8 +30,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.concavenp.nanodegree.popularmovies.MainActivity"/>

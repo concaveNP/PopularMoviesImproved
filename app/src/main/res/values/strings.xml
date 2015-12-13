@@ -5,10 +5,21 @@
     <!-- The base URL that will be used to query The Movie DB web services -->
     <string name="base_url_image_retrieval">http://image.tmdb.org/t/p/w185</string>
     <string name="base_url_backdrop_image_retrieval">http://image.tmdb.org/t/p/w500</string>
+    <string name="base_url_data_request">https://api.themoviedb.org/3/discover/movie?sort_by=</string>
+    <string name="part_url_api_key">&amp;api_key=</string>
 
     <string name="title_activity_movie_details">MovieDetailsActivity</string>
-    <string name="popularity_label_string">Popularity:</string>
+    <string name="popularity_label_string">Popularity</string>
     <string name="votes_label_string">Rating:</string>
+
+    <string name="formatted_movie_title">%1$s (%2$s)</string>
+    <string name="formatted_popularity_string">: %1$d%%</string>
+    <string name="formatted_votes_string">: %1$s/10 (%2$d votes)</string>
+
+    <string name="service_request_failure_message">Error occurred while requesting movie data</string>
+
+    <string name="content_description_movie_poster">This is the movie poster image`</string>
+    <string name="content_description_movie_backdrop">This is the movie backdrop image</string>
 
     <!-- Strings related to Settings/Preferences -->
     <string name="title_activity_settings">Settings</string>

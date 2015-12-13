@@ -16,11 +16,12 @@ import java.util.Map;
 /**
  * Example taken from: https://developer.android.com/training/volley/request-custom.html
  *
- * This class will be used to make Volley requests that will in turn be converted to a list of MovieItems
+ * This class will be used to make Volley requests that will in turn be converted to a list of MovieItems.
  *
- * @param <T>
+ * @param <T> The generic parameter that will be the GSON object containing the request results data
  */
-public class GsonRequest<T> extends Request<T> {
+class GsonRequest<T> extends Request<T> {
+
     private final Gson gson = new Gson();
     private final Class<T> clazz;
     private final Map<String, String> headers;
@@ -36,6 +37,7 @@ public class GsonRequest<T> extends Request<T> {
     public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
                        Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
+
         this.clazz = clazz;
         this.headers = headers;
         this.listener = listener;
@@ -54,12 +56,11 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
-            String json = new String(
-                    response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(
-                    gson.fromJson(json, clazz),
-                    HttpHeaderParser.parseCacheHeaders(response));
+            // Create a JSON string from the response data received
+            String json = new String( response.data, HttpHeaderParser.parseCharset(response.headers));
+
+            // Convert the JSON string into a GSON object and return  the result
+            return Response.success( gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

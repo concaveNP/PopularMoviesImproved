@@ -16,16 +16,6 @@ import android.view.MenuItem;
  */
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
-    private static final String TAG = MainActivity.class.getSimpleName();
-
-    /**
-     * Fragment used to hold the list of movies being displayed to the user.
-     */
-    private MovieListingFragment mListingFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Create an instance of movie listing fragment
-        mListingFragment = MovieListingFragment.newInstance("", "");
+        MovieListingFragment listingFragment = new MovieListingFragment();
 
         // Add the fragment to the 'fragment_container' FrameLayout
-        getSupportFragmentManager().beginTransaction().add(R.id.main_content, mListingFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.main_content, listingFragment).commit();
     }
 
     @Override
