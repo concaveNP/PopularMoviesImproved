@@ -4,35 +4,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 /**
  * References:
- *      Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
- *      Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
+ * Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
+ * Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
  */
-public class MainActivity extends AppCompatActivity implements MovieListingFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
     /**
      * The logging tag string to be associated with log data for this class
      */
     private static final String TAG = MainActivity.class.getSimpleName();
 
-   @Override
+    /**
+     * Fragment used to hold the list of movies being displayed to the user.
+     */
+    private MovieListingFragment mListingFragment;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-       // Create an instance of movie listing fragment
-       MovieListingFragment fragment = MovieListingFragment.newInstance("","");
+        // If the application has not run before then initialize the preference settings with default values
+        if (savedInstanceState == null) {
+            PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
+        }
 
-       // Add the fragment to the 'fragment_container' FrameLayout
-       getSupportFragmentManager().beginTransaction().add(R.id.main_content, fragment).commit();
+        // Create an instance of movie listing fragment
+        mListingFragment = MovieListingFragment.newInstance("", "");
+
+        // Add the fragment to the 'fragment_container' FrameLayout
+        getSupportFragmentManager().beginTransaction().add(R.id.main_content, mListingFragment).commit();
     }
 
     @Override
@@ -57,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
             // For now, give the activity some extra parameters that will tell it to use a specific
             // PreferenceFragment when starting up.  These lines can be removed when the user
             // preference settings gets more complex and require displaying preference headers to the user.
-            intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
-            intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true);
+            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
+            intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
 
             // Start the preference activity
             startActivity(intent);
@@ -68,13 +79,5 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onFragmentInteraction(String id) {
-
-    }
-
-
-
 
 }

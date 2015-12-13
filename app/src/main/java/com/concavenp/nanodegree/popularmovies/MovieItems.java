@@ -3,11 +3,8 @@ package com.concavenp.nanodegree.popularmovies;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: 12/5/2015 - If I do something more exotic and need more pages of data then this class will have to change.
-
 /**
  * This is a GSON hand rolled class.
- *
  *
  * Created by dave on 11/2/2015.
  */

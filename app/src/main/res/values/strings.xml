@@ -16,16 +16,24 @@
     <!-- Beginning of General settings -->
     <string name="pref_header_general">General</string>
     <string name="sorting_preference_type_key">sorting_list</string>
-    <string name="sorting_preference_type_title">Movies will be sorted by:</string>
+    <string name="sorting_preference_type_title">Movie sorting order</string>
+
     <string name="popularity_title">Popularity</string>
-    <string name="release_date_title">Release Date</string>
+    <string name="popularity_title_value">popularity.desc</string>
+
+    <string name="vote_average_title">Voting Average</string>
+    <string name="vote_average_title_value">vote_average.desc</string>
+
+    <string name="default_sorting_preference">@string/popularity_title</string>
+    <string name="default_sorting_preference_value">@string/popularity_title_value</string>
+
     <string-array name="movie_sorting_preference_titles">
         <item>@string/popularity_title</item>
-        <item>@string/release_date_title</item>
+        <item>@string/vote_average_title</item>
     </string-array>
     <string-array name="movie_sorting_preference_values">
-        <item>popularity.desc</item>
-        <item>release_date.desc</item>
+        <item>@string/popularity_title_value</item>
+        <item>@string/vote_average_title_value</item>
     </string-array>
     <!-- End of General settings -->
 

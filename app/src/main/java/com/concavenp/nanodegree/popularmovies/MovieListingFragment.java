@@ -1,10 +1,9 @@
 package com.concavenp.nanodegree.popularmovies;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,7 @@ import com.android.volley.toolbox.Volley;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class MovieListingFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MovieListingFragment extends Fragment {
 
     /**
      * The logging tag string to be associated with log data for this class
@@ -42,8 +41,11 @@ public class MovieListingFragment extends Fragment implements SharedPreferences.
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
-    String mSortOrder = "popularity.desc";
+    private RequestQueue mRequestQueue;
+
+    private SharedPreferences mPrefs;
+
+    String mSortOrder;
 
     /**
      * The fragment's GridView.
@@ -94,7 +96,19 @@ public class MovieListingFragment extends Fragment implements SharedPreferences.
         mGridView.setAdapter(mAdapter);
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        mRequestQueue = Volley.newRequestQueue(getActivity());
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mSortOrder = mPrefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
+
+        requestData();
+
+        return view;
+    }
+
+
+    public void requestData() {
+
         String url = "https://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
         // Request a string response from the provided URL.
@@ -116,53 +130,8 @@ public class MovieListingFragment extends Fragment implements SharedPreferences.
         });
 
         // Add the request to the RequestQueue.
-        queue.add(request);
-
-        return view;
+        mRequestQueue.add(request);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getResources().getString(R.string.sorting_preference_type_key))) {
-
-            String value = sharedPreferences.getString(key, "popularity.desc");
-
-            if (!mSortOrder.equals(value)) {
-                mSortOrder = value;
-            }
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
-    }
 
 }
