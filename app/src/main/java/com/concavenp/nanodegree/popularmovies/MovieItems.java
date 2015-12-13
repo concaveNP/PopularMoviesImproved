@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This is a GSON hand rolled class.
+ *
  * Created by dave on 11/2/2015.
  */
 public class MovieItems {

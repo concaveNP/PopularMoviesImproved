@@ -1,24 +1,20 @@
 package com.concavenp.nanodegree.popularmovies;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.concavenp.nanodegree.popularmovies.dummy.DummyContent;
-import com.google.gson.Gson;
 
 /**
  * A fragment representing a list of MovieItem(s).
@@ -29,7 +25,7 @@ import com.google.gson.Gson;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class MovieListingFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class MovieListingFragment extends Fragment {
 
     /**
      * The logging tag string to be associated with log data for this class
@@ -45,8 +41,11 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
-    String mSortOrder = "popularity.desc";
+    private RequestQueue mRequestQueue;
+
+    private SharedPreferences mPrefs;
+
+    String mSortOrder;
 
     /**
      * The fragment's GridView.
@@ -93,39 +92,23 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
         mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
-        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems()) {
-
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-
-                View result = super.getView(position, convertView, parent);
-
-                result.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        // Convert the GSON object back to a JSON string in order to pass to the activity
-                        Gson gson = new Gson();
-                        String json = gson.toJson(getModelItem(position));
-
-                        // Create and start the details activity along with passing it the Movie Item details information via JSON string
-                        Context context = view.getContext();
-                        Intent intent = new Intent(context, MovieDetailsActivity.class);
-                        intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
-                        context.startActivity(intent);
-                    }
-                });
-
-                return result;
-            }
-        };
+        mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems());
         mGridView.setAdapter(mAdapter);
 
-        // Set OnItemClickListener so we can be notified on item clicks
-        mGridView.setOnItemClickListener(this);
-
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        mRequestQueue = Volley.newRequestQueue(getActivity());
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mSortOrder = mPrefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
+
+        requestData();
+
+        return view;
+    }
+
+
+    public void requestData() {
+
         String url = "https://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
         // Request a string response from the provided URL.
@@ -133,7 +116,7 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
             @Override
             public void onResponse(MovieItems response) {
                 // First clear out any old data
-           //     mAdapter.clear();
+                mAdapter.clear();
 
                 // Add the new data
                 mAdapter.add(response);
@@ -147,50 +130,8 @@ public class MovieListingFragment extends Fragment implements AbsListView.OnItem
         });
 
         // Add the request to the RequestQueue.
-        queue.add(request);
-
-        return view;
+        mRequestQueue.add(request);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
-    }
 
 }

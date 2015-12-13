@@ -74,7 +74,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Integer votes = model.getVote_count();
         String formattedVoteAverage = new DecimalFormat("#0.0").format(model.getVote_average());
-        votesTextView.setText(" " + formattedVoteAverage + " of 10 (" + votes.toString() + " votes)");
+        votesTextView.setText(" " + formattedVoteAverage + "/10 (" + votes.toString() + " votes)");
 
         synopsisTextView.setText(model.getOverview());
     }

@@ -2,13 +2,39 @@
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
 
-    <!-- The base URL that will be used to query The Movie DB web service -->
+    <!-- The base URL that will be used to query The Movie DB web services -->
     <string name="base_url_image_retrieval">http://image.tmdb.org/t/p/w185</string>
     <string name="base_url_backdrop_image_retrieval">http://image.tmdb.org/t/p/w500</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_movie_details">MovieDetailsActivity</string>
     <string name="popularity_label_string">Popularity:</string>
-    <string name="votes_label_string">Stars:</string>
+    <string name="votes_label_string">Rating:</string>
+
+    <!-- Strings related to Settings/Preferences -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Beginning of General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="sorting_preference_type_key">sorting_list</string>
+    <string name="sorting_preference_type_title">Movie sorting order</string>
+
+    <string name="popularity_title">Popularity</string>
+    <string name="popularity_title_value">popularity.desc</string>
+
+    <string name="vote_average_title">Voting Average</string>
+    <string name="vote_average_title_value">vote_average.desc</string>
+
+    <string name="default_sorting_preference">@string/popularity_title</string>
+    <string name="default_sorting_preference_value">@string/popularity_title_value</string>
+
+    <string-array name="movie_sorting_preference_titles">
+        <item>@string/popularity_title</item>
+        <item>@string/vote_average_title</item>
+    </string-array>
+    <string-array name="movie_sorting_preference_values">
+        <item>@string/popularity_title_value</item>
+        <item>@string/vote_average_title_value</item>
+    </string-array>
+    <!-- End of General settings -->
+
 </resources>
