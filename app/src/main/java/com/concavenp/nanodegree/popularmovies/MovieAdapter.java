@@ -13,9 +13,17 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by dave on 11/2/2015.
+ * This adapter class is used for adapting a {@code MovieItem} for views displayed within
+ * the list of movies in the {@code MovieListingFragment}.
+ *
+ * Items are passed into the class when results are retrieved from a RESTful call.  The model data
+ * given to the class is in the form of GSON objects that have been built from returned JSON data.
+ *
+ * This adapter establishes a link between the displayed movie item view and bringing up details
+ * about the movie via a OnClickListener on view.  Clicking it will transition to a movie details
+ * activity {@code MovieDetailsActivity}.
  */
-public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
+class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
 
     /**
      * The logging tag string to be associated with log data for this class
@@ -28,12 +36,13 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
     private MovieItems mModel;
 
     /**
-     * Constructor that takes ???????????????
+     * Constructor for the adapter that takes a {@code MovieItems} as the model container of
+     * individual items.
      *
-     *
-     * @param context
-     * @param resource
-     * @param model
+     * @param context The current context.
+     * @param resource The resource ID for a layout file containing a TextView to use when
+     *                 instantiating views.
+     * @param model The model data to represent in the ListView.
      */
     public MovieAdapter(Context context, int resource, MovieItems model) {
         super(context, resource, model.getResults());
@@ -45,37 +54,28 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
     /**
      * Overloaded method to take a container {@code MovieItems} of the list of MovieItem(s).
      *
-     * @param movieItems The GSON populated object that contains all of the received JSON data
+     * @param movieItems The GSON object that contains all of the received JSON data
      */
     public void add(MovieItems movieItems) {
         super.addAll(movieItems.getResults());
     }
 
-    public MovieItems getModel() {
+    /**
+     * Getter for the model data
+     *
+     * @return The model
+     */
+    private MovieItems getModel() {
         return mModel;
     }
 
-    public void setModel(MovieItems model) {
-        this.mModel = model;
-    }
-
     /**
-     * Convenience method to get one specified {@code MovieItem} from the model.
+     * Setter for the model data
      *
-     * @param index The index of desired item
-     * @return A {@code MovieItem}
+     * @param model The model of data be set
      */
-    public MovieItems.MovieItem getModelItem(int index) {
-        MovieItems.MovieItem result;
-
-        if (getModel() != null) {
-            result = getModel().getResults().get(index);
-        }
-        else {
-            result = new MovieItems.MovieItem();
-        }
-
-        return result;
+    private void setModel(MovieItems model) {
+        this.mModel = model;
     }
 
     /**
@@ -128,6 +128,7 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
             }
         });
 
+        // Add a click listener to the view in order for the user to get more details about a selected movie
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +146,25 @@ public class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
         });
 
         return imageView;
+    }
+
+    /**
+     * Convenience method to get one specified {@code MovieItem} from the model.
+     *
+     * @param index The index of desired item
+     * @return A {@code MovieItem}
+     */
+    private MovieItems.MovieItem getModelItem(int index) {
+        MovieItems.MovieItem result;
+
+        if (getModel() != null) {
+            result = getModel().getResults().get(index);
+        }
+        else {
+            result = new MovieItems.MovieItem();
+        }
+
+        return result;
     }
 
 }

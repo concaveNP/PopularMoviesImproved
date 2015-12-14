@@ -10,21 +10,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * References:
- * Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
- * Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
+ * This is the main activity of the application.  It displays a fragment that contains a listing
+ * of the movies found via an API request to the themoviedb.org website service.
+ *
+ * There is a settings menu option that is displayed that will open a Preferences activity for the
+ * user to choose what data is requested in a web service.
+ *
+ * Development References:
+ * - Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
+ * - Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
  */
 public class MainActivity extends AppCompatActivity {
-
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
-    private static final String TAG = MainActivity.class.getSimpleName();
-
-    /**
-     * Fragment used to hold the list of movies being displayed to the user.
-     */
-    private MovieListingFragment mListingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Create an instance of movie listing fragment
-        mListingFragment = MovieListingFragment.newInstance("", "");
+        MovieListingFragment listingFragment = new MovieListingFragment();
 
         // Add the fragment to the 'fragment_container' FrameLayout
-        getSupportFragmentManager().beginTransaction().add(R.id.main_content, mListingFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.main_content, listingFragment).commit();
     }
 
     @Override

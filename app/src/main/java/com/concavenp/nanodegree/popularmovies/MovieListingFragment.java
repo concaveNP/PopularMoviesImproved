@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,9 +22,6 @@ import com.android.volley.toolbox.Volley;
  * <p>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
- * interface.
  */
 public class MovieListingFragment extends Fragment {
 
@@ -32,40 +30,20 @@ public class MovieListingFragment extends Fragment {
      */
     private static final String TAG = MovieListingFragment.class.getSimpleName();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    /**
+     * A Volley queue used for managing web interface requests
+     */
     private RequestQueue mRequestQueue;
 
-    private SharedPreferences mPrefs;
-
-    String mSortOrder;
-
     /**
-     * The fragment's GridView.
+     * This
      */
-    private AbsListView mGridView;
+    private String mSortOrder;
 
     /**
      * The Adapter which will be used to populate the GridView with Views.
      */
     private MovieAdapter mAdapter;
-
-    // TODO: Rename and change types of parameters
-    public static MovieListingFragment newInstance(String param1, String param2) {
-        MovieListingFragment fragment = new MovieListingFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -75,41 +53,41 @@ public class MovieListingFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        // TODO: Change Adapter to display your content
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        // Set the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
-        mGridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
+        // Create the grid of views who's content will be driven by the adapter
+        AbsListView gridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems());
-        mGridView.setAdapter(mAdapter);
+        gridView.setAdapter(mAdapter);
 
         // Instantiate the RequestQueue.
         mRequestQueue = Volley.newRequestQueue(getActivity());
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mSortOrder = mPrefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
+        // Get the sort type that should be used when requesting data from the movie DB
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
 
+        // Make the web request for data
         requestData();
 
         return view;
     }
 
+    /**
+     * Method that will create a request object that will be added the Volley request queue for
+     * processing.  The request will translate the JSON response data into a GSON populated object.
+     * The adapter will then be given the new data which will in turn update the displayed listing
+     * of movies to the user.
+     */
+    private void requestData() {
 
-    public void requestData() {
-
-        String url = "https://api.themoviedb.org/3/discover/movie?sort_by=" + mSortOrder + "&api_key=" + getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
+        String url =
+                getResources().getString(R.string.base_url_data_request) +
+                        mSortOrder +
+                        getResources().getString(R.string.part_url_api_key) +
+                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
         // Request a string response from the provided URL.
         GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
@@ -124,14 +102,19 @@ public class MovieListingFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.d(TAG, "some error");
+                String errorMessage = getResources().getString(R.string.service_request_failure_message);
+
+                // Log the data
+                Log.e(TAG, errorMessage + ": " + error);
+                error.printStackTrace();
+
+                // Show a message to the user
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
             }
         });
 
         // Add the request to the RequestQueue.
         mRequestQueue.add(request);
     }
-
 
 }

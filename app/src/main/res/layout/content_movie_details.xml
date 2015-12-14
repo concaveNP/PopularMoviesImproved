@@ -7,106 +7,86 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <GridLayout
+        android:id="@+id/gridLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.concavenp.nanodegree.popularmovies.MovieDetailsActivity"
-        tools:showIn="@layout/activity_movie_details">
+        android:columnCount="2"
+        android:padding="@dimen/details_margin">
 
-        <GridLayout
-            android:id="@+id/gridLayout"
+        <TextView
+            android:id="@+id/title_TextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2">
+            android:layout_columnSpan="2"
+            android:layout_marginBottom="@dimen/details_margin"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <ImageView
+            android:id="@+id/poster_ImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:contentDescription="@string/content_description_movie_poster"/>
+
+        <RelativeLayout
+            android:id="@+id/details_Layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginLeft="@dimen/details_margin"
+            android:layout_marginStart="@dimen/details_margin"
+            >
 
             <TextView
-                android:id="@+id/title_TextView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_marginBottom="@dimen/details_margin"
-                android:text="Large Text"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-            <ImageView
-                android:id="@+id/poster_ImageView"
+                android:id="@+id/popularity_Label_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_column="0"/>
-
-            <RelativeLayout
-                android:id="@+id/details_Layout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/poster_ImageView"
-                android:layout_column="1"
-                android:layout_marginLeft="@dimen/details_margin"
-                android:layout_toRightOf="@+id/poster_ImageView">
-
-                <TextView
-                    android:id="@+id/popularity_Label_TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/popularity_label_string"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <TextView
-                    android:id="@+id/popularity_TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/popularity_Label_TextView"
-                    android:layout_toEndOf="@+id/popularity_Label_TextView"
-                    android:layout_toRightOf="@+id/popularity_Label_TextView"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <Space
-                    android:id="@+id/votes_Space"
-                    android:layout_width="20px"
-                    android:layout_height="20px"
-                    android:layout_below="@+id/popularity_TextView"/>
-
-                <TextView
-                    android:id="@+id/votes_Label_TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/votes_Space"
-                    android:text="@string/votes_label_string"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <TextView
-                    android:id="@+id/votes_TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/votes_Label_TextView"
-                    android:layout_toEndOf="@+id/votes_Label_TextView"
-                    android:layout_toRightOf="@+id/votes_Label_TextView"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-            </RelativeLayout>
+                android:text="@string/popularity_label_string"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             <TextView
-                android:id="@+id/synopsis_TextView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/gridLayout"
-                android:layout_columnSpan="2"
-                android:layout_marginTop="@dimen/details_margin"
+                android:id="@+id/popularity_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/popularity_Label_TextView"
+                android:layout_toEndOf="@+id/popularity_Label_TextView"
+                android:layout_toRightOf="@+id/popularity_Label_TextView"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
-        </GridLayout>
 
-    </RelativeLayout>
+            <Space
+                android:id="@+id/votes_Space"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/popularity_TextView"/>
+
+            <TextView
+                android:id="@+id/votes_Label_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/votes_Space"
+                android:text="@string/votes_label_string"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <TextView
+                android:id="@+id/votes_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/votes_Label_TextView"
+                android:layout_toEndOf="@+id/votes_Label_TextView"
+                android:layout_toRightOf="@+id/votes_Label_TextView"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/synopsis_TextView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_columnSpan="2"
+            android:layout_marginTop="@dimen/details_margin"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+    </GridLayout>
 
 </android.support.v4.widget.NestedScrollView>

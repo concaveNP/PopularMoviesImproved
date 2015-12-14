@@ -8,9 +8,10 @@ import java.util.List;
  *
  * Created by dave on 11/2/2015.
  */
-public class MovieItems {
+@SuppressWarnings("unused")
+class MovieItems {
 
-    public static class MovieItem {
+   public static class MovieItem {
 
         private boolean adult;
         private String backdrop_path;
@@ -85,10 +86,10 @@ public class MovieItems {
 
     }
 
-    int page;
-    List<MovieItem> results = new ArrayList<>();
-    int total_pages;
-    int total_results;
+    private int page;
+    private final List<MovieItem> results = new ArrayList<>();
+    private int total_pages;
+    private int total_results;
 
     public int getPage() {
         return page;
