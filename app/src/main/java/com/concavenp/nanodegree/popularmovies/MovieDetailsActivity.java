@@ -13,8 +13,16 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 
+/**
+ * Activity that is brought up when the user selects a movie item from the main activity.  For the
+ * given movie it will display extra information about the movie.
+ */
 public class MovieDetailsActivity extends AppCompatActivity {
 
+    /**
+     * String used when creating the activity via intent.  This key will be used to retrieve the
+     * JSON string data passed in that contains all of the details about the movie in question.
+     */
     public static final String EXTRA_DATA = "json_movie_item";
 
     @Override
@@ -69,7 +77,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         String backdropURL = getResources().getString(R.string.base_url_backdrop_image_retrieval) + model.getBackdrop_path();
         Picasso.with(this).load(backdropURL).into(backdropImageView);
 
-        // I've noticed some of the movies do not have proper release_date entries.  So, I'm checking for that here.
+        // The the title of the movie along with the year it was released.  Also, I've noticed some
+        // of the movies do not have proper release_date entries.  So, I'm checking for that here.
         String releaseDate = model.getRelease_date();
         String year;
         if (releaseDate.length() >= 4) {
@@ -84,17 +93,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
         String formattedTitle = String.format(getResources().getString(R.string.formatted_movie_title), model.getTitle(), year);
         titleTextView.setText(formattedTitle);
 
+        // Set the popularity stats of the movie in question
         Long longPopularity = Math.round(model.getPopularity());
         Integer popularity = longPopularity.intValue();
         String formattedPopularity = String.format(getResources().getString(R.string.formatted_popularity_string), popularity);
         popularityTextView.setText(formattedPopularity);
 
+        // Set the user voting stats of the movie in question
         Integer votes = model.getVote_count();
         String formattedVoteAverage = new DecimalFormat("#0.0").format(model.getVote_average());
         String formattedVotes = String.format(getResources().getString(R.string.formatted_votes_string), formattedVoteAverage, votes);
         votesTextView.setText(formattedVotes);
 
-
+        // Set the test displaying the movie synopsis
         synopsisTextView.setText(model.getOverview());
     }
 

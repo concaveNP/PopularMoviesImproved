@@ -10,9 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * References:
- * Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
- * Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
+ * This is the main activity of the application.  It displays a fragment that contains a listing
+ * of the movies found via an API request to the themoviedb.org website service.
+ *
+ * There is a settings menu option that is displayed that will open a Preferences activity for the
+ * user to choose what data is requested in a web service.
+ *
+ * Development References:
+ * - Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
+ * - Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
  */
 public class MainActivity extends AppCompatActivity {
 
