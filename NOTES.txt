@@ -1,0 +1,4 @@
+References for stuff I had to lookup:
+
+How to clone your own github repo into your own github account (hint - you can't):  http://stackoverflow.com/questions/10963878/how-do-you-fork-your-own-project-on-github
+
