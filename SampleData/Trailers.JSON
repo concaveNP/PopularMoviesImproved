@@ -1,0 +1,32 @@
+{
+  "id": 135397,
+  "results": [
+    {
+      "id": "54749bea9251414f41001b58",
+      "iso_639_1": "en",
+      "key": "bvu-zlR5A8Q",
+      "name": "Teaser",
+      "site": "YouTube",
+      "size": 1080,
+      "type": "Teaser"
+    },
+    {
+      "id": "5474d2339251416e58002ae1",
+      "iso_639_1": "en",
+      "key": "RFinNxS5KN4",
+      "name": "Official Trailer",
+      "site": "YouTube",
+      "size": 1080,
+      "type": "Trailer"
+    },
+    {
+      "id": "56404e639251417052000369",
+      "iso_639_1": "en",
+      "key": "aJJrkyHas78",
+      "name": "Official Global Trailer",
+      "site": "YouTube",
+      "size": 1080,
+      "type": "Trailer"
+    }
+  ]
+}

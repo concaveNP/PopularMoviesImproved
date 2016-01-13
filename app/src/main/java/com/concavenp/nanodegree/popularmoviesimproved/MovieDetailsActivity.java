@@ -28,9 +28,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +55,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
      * JSON string data passed in that contains all of the details about the movie in question.
      */
     public static final String EXTRA_DATA = "json_movie_item";
+    /**
+     * The logging tag string to be associated with log data for this class
+     */
+    private static final String TAG = MovieDetailsActivity.class.getSimpleName();
+    /**
+     * A Volley queue used for managing web interface requests
+     */
+    private RequestQueue mRequestQueue;
+
+    /**
+     * The Adapter which will be used to populate the ListView with Views.
+     */
+    private TrailerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +151,67 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         // Set the test displaying the movie synopsis
         synopsisTextView.setText(model.getOverview());
+
+        // Create the list view who's content will be driven by the adapter
+        AbsListView listView = (ListView) findViewById(R.id.trailers_ListView);
+        mAdapter = new TrailerAdapter(this, R.id.trailers_ListView, new TrailerItems());
+        listView.setAdapter(mAdapter);
+
+        // Instantiate the RequestQueue.
+        mRequestQueue = Volley.newRequestQueue(this);
+
+        // Make the web request for data
+        requestData(model.getId());
+    }
+
+    /**
+     * Method that will create a request object that will be added the Volley request queue for
+     * processing.  The request will translate the JSON response data into a GSON populated object.
+     * The adapter will then be given the new data which will in turn update the displayed listing
+     * of movie trailers to the user.
+     *
+     * @param id - This themoviedb database index for the movie question
+     */
+    private void requestData(int id) {
+
+        String url =
+                String.format(getResources().getString(R.string.base_url_trailer_request), id) +
+                        "?" +
+                        getResources().getString(R.string.part_url_api_key_dude) +
+                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
+
+        // Request a string response from the provided URL.
+        GsonRequest<TrailerItems> request = new GsonRequest<>(url, TrailerItems.class, null, new Response.Listener<TrailerItems>() {
+            @Override
+            public void onResponse(TrailerItems response) {
+                // First clear out any old data
+                //mAdapter.clear();
+
+                // Log the data
+                Log.d(TAG, "data received with: " + response.getResults().size());
+
+                // Add the new data
+                mAdapter.add(response);
+
+                //mAdapter.notifyDataSetChanged();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String errorMessage = getResources().getString(R.string.service_request_failure_message);
+
+                // Log the data
+                Log.e(TAG, errorMessage + ": " + error);
+                error.printStackTrace();
+
+                // Show a message to the user
+                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        mRequestQueue.add(request);
     }
 
 }
