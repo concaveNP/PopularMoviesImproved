@@ -23,15 +23,17 @@
 
 package com.concavenp.nanodegree.popularmoviesimproved;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.AbsListView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -152,11 +154,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Set the test displaying the movie synopsis
         synopsisTextView.setText(model.getOverview());
 
-        // Create the list view who's content will be driven by the adapter
-        AbsListView listView = (ListView) findViewById(R.id.trailers_ListView);
-        mAdapter = new TrailerAdapter(this, R.id.trailers_ListView, new TrailerItems());
-        listView.setAdapter(mAdapter);
-
         // Instantiate the RequestQueue.
         mRequestQueue = Volley.newRequestQueue(this);
 
@@ -184,17 +181,29 @@ public class MovieDetailsActivity extends AppCompatActivity {
         GsonRequest<TrailerItems> request = new GsonRequest<>(url, TrailerItems.class, null, new Response.Listener<TrailerItems>() {
             @Override
             public void onResponse(TrailerItems response) {
-                // First clear out any old data
-                //mAdapter.clear();
+                GridLayout grid = (GridLayout) findViewById(R.id.gridLayout);
 
-                // Log the data
-                Log.d(TAG, "data received with: " + response.getResults().size());
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                // Add the new data
-                mAdapter.add(response);
+                for (TrailerItems.TrailerItem item : response.getResults()) {
 
-                //mAdapter.notifyDataSetChanged();
+                    View result = inflater.inflate(R.layout.trailers_item, grid, false);
 
+                    // Set the title of the trailer
+                    TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
+                    String title = item.getName();
+
+                    // I've seen the title for various things turn up null, thus check for it.
+                    if (title != null) {
+                        textView.setText(title);
+                    }
+
+                    GridLayout.LayoutParams param = new GridLayout.LayoutParams();
+                    param.columnSpec = GridLayout.spec(0, 2);
+                    result.setLayoutParams(param);
+
+                    grid.addView(result);
+                }
             }
         }, new Response.ErrorListener() {
             @Override

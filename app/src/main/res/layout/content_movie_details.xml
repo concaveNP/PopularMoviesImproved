@@ -119,14 +119,6 @@
             android:layout_row="3"
             android:text="New Text"/>
 
-        <ListView
-            android:id="@+id/trailers_ListView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="2"
-            android:layout_row="4"
-            android:background="#3838bb"
-            android:stackFromBottom="false"/>
     </GridLayout>
 
 </android.support.v4.widget.NestedScrollView>
