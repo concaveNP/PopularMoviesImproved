@@ -25,6 +25,7 @@ package com.concavenp.nanodegree.popularmoviesimproved;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -178,7 +180,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
 
         // Request a string response from the provided URL.
-        GsonRequest<TrailerItems> request = new GsonRequest<>(url, TrailerItems.class, null, new Response.Listener<TrailerItems>() {
+        final GsonRequest<TrailerItems> request = new GsonRequest<>(url, TrailerItems.class, null, new Response.Listener<TrailerItems>() {
             @Override
             public void onResponse(TrailerItems response) {
                 GridLayout grid = (GridLayout) findViewById(R.id.gridLayout);
@@ -188,6 +190,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 for (TrailerItems.TrailerItem item : response.getResults()) {
 
                     View result = inflater.inflate(R.layout.trailers_item, grid, false);
+
+                    ImageButton imageButton = (ImageButton) result.findViewById(R.id.play_ImageButton);
+                    imageButton.setTag(item.getKey());
+                    imageButton.setOnClickListener(new View.OnClickListener() {
+                                                       @Override
+                                                       public void onClick(View v) {
+                                                           startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + v.getTag())));
+                                                       }
+                                                   }
+                    );
 
                     // Set the title of the trailer
                     TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
