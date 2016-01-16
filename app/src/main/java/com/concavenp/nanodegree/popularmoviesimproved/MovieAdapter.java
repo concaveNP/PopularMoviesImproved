@@ -181,7 +181,8 @@ class MovieAdapter extends ArrayAdapter<MovieItems.MovieItem> {
         MovieItems.MovieItem result;
 
         if (getModel() != null) {
-            result = getModel().getResults().get(index);
+//            result = getModel().getResults().get(index);
+            result = getItem(index);
         }
         else {
             result = new MovieItems.MovieItem();
