@@ -30,6 +30,7 @@
     <string name="base_url_backdrop_image_retrieval">http://image.tmdb.org/t/p/w500</string>
     <string name="base_url_data_request">https://api.themoviedb.org/3/discover/movie?sort_by=</string>
     <string name="base_url_trailer_request">https://api.themoviedb.org/3/movie/%1$d/videos</string>
+    <string name="base_url_review_request">https://api.themoviedb.org/3/movie/%1$d/reviews</string>
     <string name="part_url_api_key">&amp;api_key=</string>
     <string name="part_url_api_key_dude">api_key=</string>
 

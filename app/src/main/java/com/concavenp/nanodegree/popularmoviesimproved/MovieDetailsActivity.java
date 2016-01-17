@@ -36,6 +36,7 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,19 +60,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
      * JSON string data passed in that contains all of the details about the movie in question.
      */
     public static final String EXTRA_DATA = "json_movie_item";
+
     /**
      * The logging tag string to be associated with log data for this class
      */
     private static final String TAG = MovieDetailsActivity.class.getSimpleName();
+    private static final int MAX_REVIEWS = 2;
     /**
      * A Volley queue used for managing web interface requests
      */
     private RequestQueue mRequestQueue;
-
-    /**
-     * The Adapter which will be used to populate the ListView with Views.
-     */
-    private TrailerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,11 +154,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // Set the test displaying the movie synopsis
         synopsisTextView.setText(model.getOverview());
 
-        // Instantiate the RequestQueue.
+        // Instantiate the RequestQueue
         mRequestQueue = Volley.newRequestQueue(this);
 
-        // Make the web request for data
-        requestData(model.getId());
+        // Make the web request for trailer data
+        requestTrailerData(model.getId());
+
+        // Make the web request for reviews data
+        requestReviewsData(model.getId());
     }
 
     /**
@@ -171,7 +172,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
      *
      * @param id - This themoviedb database index for the movie question
      */
-    private void requestData(int id) {
+    private void requestTrailerData(int id) {
 
         String url =
                 String.format(getResources().getString(R.string.base_url_trailer_request), id) +
@@ -215,6 +216,55 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     result.setLayoutParams(param);
 
                     grid.addView(result);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String errorMessage = getResources().getString(R.string.service_request_failure_message);
+
+                // Log the data
+                Log.e(TAG, errorMessage + ": " + error);
+                error.printStackTrace();
+
+                // Show a message to the user
+                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        mRequestQueue.add(request);
+    }
+
+    private void requestReviewsData(int id) {
+
+        String url =
+                String.format(getResources().getString(R.string.base_url_review_request), id) +
+                        "?" +
+                        getResources().getString(R.string.part_url_api_key_dude) +
+                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
+
+        // Request a string response from the provided URL.
+        final GsonRequest<ReviewItems> request = new GsonRequest<>(url, ReviewItems.class, null, new Response.Listener<ReviewItems>() {
+            @Override
+            public void onResponse(ReviewItems response) {
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
+
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                for (ReviewItems.ReviewItem item : response.getResults()) {
+
+                    View result = inflater.inflate(R.layout.review_item, linearLayout, false);
+
+                    // Set the author of the review
+                    TextView authorTextView = (TextView) result.findViewById(R.id.author_TextView);
+                    authorTextView.setText(item.getAuthor());
+
+                    // Set the content of the review
+                    TextView contentTextView = (TextView) result.findViewById(R.id.content_TextView);
+                    contentTextView.setText(item.getContent());
+
+                    linearLayout.addView(result);
                 }
             }
         }, new Response.ErrorListener() {
