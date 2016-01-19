@@ -58,6 +58,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.concavenp.nanodegree.popularmoviesimproved.MainActivity"/>
         </activity>
+
+        <provider
+            android:name=".database.PopularMoviesProvider"
+            android:authorities="com.concavenp.nanodegree.popularmoviesimproved.database.PopularMoviesProvider"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
+
     </application>
 
 </manifest>
