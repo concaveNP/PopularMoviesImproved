@@ -43,7 +43,6 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,10 +77,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
      * The logging tag string to be associated with log data for this class
      */
     private static final String TAG = MovieDetailsActivity.class.getSimpleName();
-
-    private static final int MAX_REVIEWS = 2;
-
-    private static final int LOADER_ID = 92;
 
     private MovieItems.MovieItem mModel;
 
@@ -206,7 +201,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         requestTrailerData(mModel.getId());
 
         // Make the web request for reviews data
-        requestReviewsData(mModel.getId());
+        ReviewsCard reviewsCard = (ReviewsCard) findViewById(R.id.reviews_cardview);
+        reviewsCard.requestReviewsData(mModel.getId());
     }
 
     private void updateFavoriteMovieDB(boolean favorite) {
@@ -308,54 +304,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mRequestQueue.add(request);
     }
 
-    private void requestReviewsData(int id) {
-
-        String url =
-                String.format(getResources().getString(R.string.base_url_review_request), id) +
-                        "?" +
-                        getResources().getString(R.string.part_url_api_key_dude) +
-                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
-
-        // Request a string response from the provided URL.
-        final GsonRequest<ReviewItems> request = new GsonRequest<>(url, ReviewItems.class, null, new Response.Listener<ReviewItems>() {
-            @Override
-            public void onResponse(ReviewItems response) {
-                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
-
-                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                for (ReviewItems.ReviewItem item : response.getResults()) {
-
-                    View result = inflater.inflate(R.layout.review_item, linearLayout, false);
-
-                    // Set the author of the review
-                    TextView authorTextView = (TextView) result.findViewById(R.id.author_TextView);
-                    authorTextView.setText(item.getAuthor());
-
-                    // Set the content of the review
-                    TextView contentTextView = (TextView) result.findViewById(R.id.content_TextView);
-                    contentTextView.setText(item.getContent());
-
-                    linearLayout.addView(result);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String errorMessage = getResources().getString(R.string.service_request_failure_message);
-
-                // Log the data
-                Log.e(TAG, errorMessage + ": " + error);
-                error.printStackTrace();
-
-                // Show a message to the user
-                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        mRequestQueue.add(request);
-    }
 
     private class LoadSearchTask extends AsyncTask<Integer, Void, Cursor> {
 
