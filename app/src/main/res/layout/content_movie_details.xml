@@ -79,17 +79,11 @@
                 android:layout_toRightOf="@+id/popularity_Label_TextView"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-            <Space
-                android:id="@+id/votes_Space"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_below="@+id/popularity_TextView"/>
-
             <TextView
                 android:id="@+id/votes_Label_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/votes_Space"
+                android:layout_below="@+id/popularity_TextView"
                 android:text="@string/votes_label_string"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
 

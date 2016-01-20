@@ -23,6 +23,9 @@
 
 package com.concavenp.nanodegree.popularmoviesimproved.database;
 
+import android.net.Uri;
+import android.provider.BaseColumns;
+
 /**
  * Online References:
  * - http://developer.android.com/guide/topics/providers/content-provider-creating.html
@@ -36,7 +39,33 @@ public class PopularMoviesContract {
     /**
      * The Content Authority name
      */
-    public static final String CONTENT_AUTHORITY = "com.concavenp.nanodegree.popularmoviesimproved.PopularMoviesProvider";
+    public static final String AUTHORITY = "com.concavenp.nanodegree.popularmoviesimproved.database.PopularMoviesProvider";
+
+    // Database specific constants
+    public static final String DB_NAME = "PopularMovies.db";
+    public static final int DB_VERSION = 1;
+
+    // Table names:
+    public static final String DB_FAVORITES_TABLE = "favorites";
+
+    // Uri:
+    public static final Uri FAVORITES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DB_FAVORITES_TABLE);
+
+    public static final int FAVORITES_ITEM = 1;
+    public static final int FAVORITES_DIR = 2;
+
+    public static final String FAVORITES_TYPE_ITEM = "vnd.android.cursor.item/vnd.com.concavenp.nanodegree.popularmoviesimproved." + DB_FAVORITES_TABLE;
+    public static final String FAVORITES_TYPE_DIR = "vnd.android.cursor.dir/vnd.com.concavenp.nanodegree.popularmoviesimproved." + DB_FAVORITES_TABLE;
+
+    // Default sorts:
+    public static final String FAVORITES_DEFAULT_SORT = FavoritesColumns._ID + " DESC";
+
+    public class FavoritesColumns implements BaseColumns {
+
+        public static final String MOVIE_ID = "movieId";
+        public static final String POSTER_PATH = "posterPath";
+
+    }
 
 
 }
