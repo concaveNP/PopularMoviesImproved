@@ -24,11 +24,9 @@
 package com.concavenp.nanodegree.popularmoviesimproved;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -37,18 +35,11 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmoviesimproved.database.PopularMoviesContract;
 import com.google.gson.Gson;
@@ -198,7 +189,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         new LoadSearchTask().execute(mModel.getId());
 
         // Make the web request for trailer data
-        requestTrailerData(mModel.getId());
+        TrailersCard trailersCard = (TrailersCard) findViewById(R.id.trailers_cardview);
+        trailersCard.requestTrailersData(mModel.getId());
 
         // Make the web request for reviews data
         ReviewsCard reviewsCard = (ReviewsCard) findViewById(R.id.reviews_cardview);
@@ -231,79 +223,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
     }
-
-    /**
-     * Method that will create a request object that will be added the Volley request queue for
-     * processing.  The request will translate the JSON response data into a GSON populated object.
-     * The adapter will then be given the new data which will in turn update the displayed listing
-     * of movie trailers to the user.
-     *
-     * @param id - This themoviedb database index for the movie question
-     */
-    private void requestTrailerData(int id) {
-
-        String url =
-                String.format(getResources().getString(R.string.base_url_trailer_request), id) +
-                        "?" +
-                        getResources().getString(R.string.part_url_api_key_dude) +
-                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
-
-        // Request a string response from the provided URL.
-        final GsonRequest<TrailerItems> request = new GsonRequest<>(url, TrailerItems.class, null, new Response.Listener<TrailerItems>() {
-            @Override
-            public void onResponse(TrailerItems response) {
-                GridLayout grid = (GridLayout) findViewById(R.id.gridLayout);
-
-                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                for (TrailerItems.TrailerItem item : response.getResults()) {
-
-                    View result = inflater.inflate(R.layout.trailers_item, grid, false);
-
-                    ImageButton imageButton = (ImageButton) result.findViewById(R.id.play_ImageButton);
-                    imageButton.setTag(item.getKey());
-                    imageButton.setOnClickListener(new View.OnClickListener() {
-                                                       @Override
-                                                       public void onClick(View v) {
-                                                           startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + v.getTag())));
-                                                       }
-                                                   }
-                    );
-
-                    // Set the title of the trailer
-                    TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
-                    String title = item.getName();
-
-                    // I've seen the title for various things turn up null, thus check for it.
-                    if (title != null) {
-                        textView.setText(title);
-                    }
-
-                    GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-                    param.columnSpec = GridLayout.spec(0, 2);
-                    result.setLayoutParams(param);
-
-                    grid.addView(result);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String errorMessage = getResources().getString(R.string.service_request_failure_message);
-
-                // Log the data
-                Log.e(TAG, errorMessage + ": " + error);
-                error.printStackTrace();
-
-                // Show a message to the user
-                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        mRequestQueue.add(request);
-    }
-
 
     private class LoadSearchTask extends AsyncTask<Integer, Void, Cursor> {
 
@@ -344,6 +263,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.
                 mFab.setImageResource(android.R.drawable.star_on);
+
+                // TODO: 1/19/2016 - must be a way to increase the star size - might have to pick another icon
+
             } else {
                 // No, this is NOT a favorite
                 mFab.setTag(new Boolean(false));
