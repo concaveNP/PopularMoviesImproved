@@ -27,7 +27,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,13 +94,12 @@ public class MovieListingFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         mSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
 
-
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter();
         recyclerView.setAdapter(mAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // TODO: 1/21/2016 - this should be driven by a resource value determined by phone/tablet
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 requestData(current_page);
