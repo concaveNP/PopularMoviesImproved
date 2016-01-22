@@ -27,12 +27,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -80,10 +80,12 @@ public class MovieListingFragment extends Fragment {
         // Set the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
+        /*
         // Create the grid of views who's content will be driven by the adapter
         AbsListView gridView = (GridView)view.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(getActivity(), R.id.main_Movies_GridView, new MovieItems());
         gridView.setAdapter(mAdapter);
+        */
 
         // Instantiate the RequestQueue.
         mRequestQueue = Volley.newRequestQueue(getActivity());
@@ -92,8 +94,25 @@ public class MovieListingFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         mSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
 
-        // Make the web request for data
-        requestData();
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.main_Movies_GridView);
+        mAdapter = new MovieAdapter();
+        recyclerView.setAdapter(mAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                requestData(current_page);
+            }
+        });
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+
+        // Make the first web request for page one of the data
+        requestData(1);
 
         return view;
     }
@@ -104,20 +123,21 @@ public class MovieListingFragment extends Fragment {
      * The adapter will then be given the new data which will in turn update the displayed listing
      * of movies to the user.
      */
-    private void requestData() {
+    private void requestData(int page) {
 
         String url =
                 getResources().getString(R.string.base_url_data_request) +
                         mSortOrder +
                         getResources().getString(R.string.part_url_api_key) +
-                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN);
+                        getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN) +
+                        "&page=" + page;
 
         // Request a string response from the provided URL.
         GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
             @Override
             public void onResponse(MovieItems response) {
                 // First clear out any old data
-                mAdapter.clear();
+                //mAdapter.clear();
 
                 // Add the new data
                 mAdapter.add(response);
