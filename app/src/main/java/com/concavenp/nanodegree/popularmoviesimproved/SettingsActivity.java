@@ -56,6 +56,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -116,6 +117,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), defaultValue));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +137,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
@@ -177,6 +184,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -190,6 +201,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("sorting_list"), getResources().getString(R.string.default_sorting_preference_value));
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();

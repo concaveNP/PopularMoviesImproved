@@ -42,6 +42,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmoviesimproved.database.PopularMoviesContract;
+import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 

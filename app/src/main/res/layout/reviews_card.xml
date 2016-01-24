@@ -22,6 +22,11 @@
   ~     You can contact the author via https://github.com/concaveNP
   -->
 
+<!--
+todo - reference
+    http://stackoverflow.com/questions/15128652/how-to-add-vertical-divider-to-a-horizontal-linearlayout
+-->
+
 <com.concavenp.nanodegree.popularmoviesimproved.ReviewsCard
     android:id="@+id/reviews_cardview"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -47,10 +52,12 @@
             android:id="@+id/short_review_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:divider="@drawable/divider"
+            android:orientation="vertical"
+            android:showDividers="middle"/>
 
         <Button
-            android:id="@+id/read_more"
+            android:id="@+id/reviews_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

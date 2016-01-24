@@ -21,7 +21,7 @@
  *     You can contact the author via https://github.com/concaveNP
  */
 
-package com.concavenp.nanodegree.popularmoviesimproved;
+package com.concavenp.nanodegree.popularmoviesimproved.gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
  * Created by dave on 11/2/2015.
  */
 @SuppressWarnings("unused")
-class MovieItems {
+public class MovieItems {
 
     private final List<MovieItem> results = new ArrayList<>();
     private int page;

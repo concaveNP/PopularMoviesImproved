@@ -31,6 +31,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.concavenp.nanodegree.popularmoviesimproved.gson.TrailerItems;
+
 /**
  * Created by dave on 1/9/2016.
  */

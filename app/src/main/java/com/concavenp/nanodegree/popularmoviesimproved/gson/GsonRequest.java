@@ -21,7 +21,7 @@
  *     You can contact the author via https://github.com/concaveNP
  */
 
-package com.concavenp.nanodegree.popularmoviesimproved;
+package com.concavenp.nanodegree.popularmoviesimproved.gson;
 
 
 import com.android.volley.AuthFailureError;
@@ -43,7 +43,7 @@ import java.util.Map;
  *
  * @param <T> The generic parameter that will be the GSON object containing the request results data
  */
-class GsonRequest<T> extends Request<T> {
+public class GsonRequest<T> extends Request<T> {
 
     private final Gson gson = new Gson();
     private final Class<T> clazz;

@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
