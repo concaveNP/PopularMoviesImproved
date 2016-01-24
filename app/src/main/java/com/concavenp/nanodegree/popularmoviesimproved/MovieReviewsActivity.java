@@ -23,16 +23,14 @@
 
 package com.concavenp.nanodegree.popularmoviesimproved;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -40,66 +38,61 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmoviesimproved.gson.GsonRequest;
-import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
+import com.concavenp.nanodegree.popularmoviesimproved.gson.ReviewItems;
 
-/**
- * A fragment representing a list of MovieItem(s).
- * <p>
- * Large screen devices (such as tablets) are supported by replacing the ListView
- * with a GridView.
- */
-public class MovieListingFragment extends Fragment {
+public class MovieReviewsActivity extends AppCompatActivity {
 
+    /**
+     * String used when creating the activity via intent.  This key will be used to retrieve the
+     * movie id used to lookup all of the reviews for the movie.
+     */
+    public static final String EXTRA_DATA = "movie_id";
     /**
      * The logging tag string to be associated with log data for this class
      */
-    private static final String TAG = MovieListingFragment.class.getSimpleName();
-
+    private static final String TAG = MovieReviewsActivity.class.getSimpleName();
+    private static final int DEFAULT_MOVIE_ID = -1;
     /**
      * A Volley queue used for managing web interface requests
      */
     private RequestQueue mRequestQueue;
-
     /**
-     * This
+     * The Adapter which will be used to populate the RecyclerView with Views.
      */
-    private String mSortOrder;
-
-    /**
-     * The Adapter which will be used to populate the GridView with Views.
-     */
-    private MovieAdapter mAdapter;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public MovieListingFragment() {
-    }
+    private ReviewsAdapter mAdapter;
+    private int mMovieId;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Set the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_movie_reviews);
+
+        // This activity is not the home, so show the back arrow.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        mMovieId = intent.getIntExtra(EXTRA_DATA, DEFAULT_MOVIE_ID);
+
+        // TODO: 1/23/2016 - error check for the DEFAULT_MOVIE_ID
 
         // Instantiate the RequestQueue.
-        mRequestQueue = Volley.newRequestQueue(getActivity());
+        mRequestQueue = Volley.newRequestQueue(this);
 
-        // Get the sort type that should be used when requesting data from the movie DB
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.main_Movies_GridView);
-        mAdapter = new MovieAdapter();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.reviews_RecyclerView);
+        mAdapter = new ReviewsAdapter();
         recyclerView.setAdapter(mAdapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // TODO: 1/21/2016 - this should be driven by a resource value determined by phone/tablet
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(gridLayoutManager) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 requestData(current_page);
             }
         });
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -107,8 +100,17 @@ public class MovieListingFragment extends Fragment {
 
         // Make the first web request for page one of the data
         requestData(1);
+    }
 
-        return view;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -119,22 +121,22 @@ public class MovieListingFragment extends Fragment {
      */
     private void requestData(int page) {
 
+        // TODO: 1/23/2016 - fix magic string
         String url =
-                getResources().getString(R.string.base_url_data_request) +
-                        mSortOrder +
-                        getResources().getString(R.string.part_url_api_key) +
+                String.format(getResources().getString(R.string.base_url_review_request), mMovieId) +
+                        "?" +
+                        getResources().getString(R.string.part_url_api_key_dude) +
                         getResources().getString(R.string.THE_MOVIE_DB_API_TOKEN) +
                         "&page=" + page;
 
         // Request a string response from the provided URL.
-        GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
+        GsonRequest<ReviewItems> request = new GsonRequest<>(url, ReviewItems.class, null, new Response.Listener<ReviewItems>() {
             @Override
-            public void onResponse(MovieItems response) {
-                // First clear out any old data
-                //mAdapter.clear();
+            public void onResponse(ReviewItems response) {
 
                 // Add the new data
                 mAdapter.add(response);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -145,8 +147,9 @@ public class MovieListingFragment extends Fragment {
                 Log.e(TAG, errorMessage + ": " + error);
                 error.printStackTrace();
 
+                // TODO: 1/23/2016 - verify the 'this' usage for makeText
                 // Show a message to the user
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(MovieReviewsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         });
 

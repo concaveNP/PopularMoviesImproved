@@ -21,7 +21,7 @@
  *     You can contact the author via https://github.com/concaveNP
  */
 
-package com.concavenp.nanodegree.popularmoviesimproved;
+package com.concavenp.nanodegree.popularmoviesimproved.gson;
 
 import java.util.ArrayList;
 import java.util.List;

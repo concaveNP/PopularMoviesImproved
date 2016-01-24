@@ -23,6 +23,7 @@
 
 package com.concavenp.nanodegree.popularmoviesimproved;
 
+import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
 import com.google.gson.Gson;
 
 import org.junit.Test;

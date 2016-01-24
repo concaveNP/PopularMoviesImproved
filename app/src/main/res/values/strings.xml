@@ -34,7 +34,7 @@
     <string name="part_url_api_key">&amp;api_key=</string>
     <string name="part_url_api_key_dude">api_key=</string>
 
-    <string name="title_activity_movie_details">MovieDetailsActivity</string>
+    <string name="title_activity_movie_details">Movie Details</string>
     <string name="popularity_label_string">Popularity</string>
     <string name="votes_label_string">Rating:</string>
     <string name="trailers_label_string">Trailers:</string>
@@ -47,6 +47,10 @@
 
     <string name="content_description_movie_poster">This is the movie poster image`</string>
     <string name="content_description_movie_backdrop">This is the movie backdrop image</string>
+
+    <string name="full_review_string">Full Review</string>
+
+    <string name="title_activity_reviews">Movie Reviews</string>
 
     <!-- Strings related to Settings/Preferences -->
     <string name="title_activity_settings">Settings</string>

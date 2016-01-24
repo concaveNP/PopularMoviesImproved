@@ -40,6 +40,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.concavenp.nanodegree.popularmoviesimproved.gson.GsonRequest;
+import com.concavenp.nanodegree.popularmoviesimproved.gson.TrailerItems;
 
 /**
  * Created by dave on 1/19/2016.
