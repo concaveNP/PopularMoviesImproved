@@ -262,13 +262,17 @@ public class MovieDetailsFragment extends Fragment {
         reviewsCard.requestReviewsData(mModel.getId());
     }
 
-
     private void updateFavoriteMovieDB(boolean favorite) {
 
         if (favorite) {
+
+            // Convert the GSON object back to a JSON string in order to pass to the activity
+            Gson gson = new Gson();
+            String json = gson.toJson(mModel);
+
             ContentValues values = new ContentValues();
             values.put(PopularMoviesContract.FavoritesColumns.MOVIE_ID, mModel.getId());
-            values.put(PopularMoviesContract.FavoritesColumns.POSTER_PATH, mModel.getPoster_path());
+            values.put(PopularMoviesContract.FavoritesColumns.JSON, json);
 
             String selection = PopularMoviesContract.FavoritesColumns.MOVIE_ID + " = ?";
             String[] selectionArgs =
@@ -279,13 +283,16 @@ public class MovieDetailsFragment extends Fragment {
             // Add and entry in the JOIN table for this filter and newly added result
             //getContentResolver().update(PopularMoviesContract.FAVORITES_CONTENT_URI, values, selection, selectionArgs );
             getContext().getContentResolver().insert(PopularMoviesContract.FAVORITES_CONTENT_URI, values);
+
         } else {
+
             String selection = PopularMoviesContract.FavoritesColumns.MOVIE_ID + " = ?";
             String[] selectionArgs =
                     {
                             Integer.toString(mModel.getId())
                     };
             getContext().getContentResolver().delete(PopularMoviesContract.FAVORITES_CONTENT_URI, selection, selectionArgs);
+
         }
 
     }

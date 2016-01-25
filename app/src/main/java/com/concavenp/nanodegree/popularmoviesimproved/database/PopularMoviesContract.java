@@ -63,7 +63,7 @@ public class PopularMoviesContract {
     public class FavoritesColumns implements BaseColumns {
 
         public static final String MOVIE_ID = "movieId";
-        public static final String POSTER_PATH = "posterPath";
+        public static final String JSON = "json";
 
     }
 

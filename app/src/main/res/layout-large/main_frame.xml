@@ -32,7 +32,7 @@
               app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <fragment
-        android:id="@+id/fragment_movieitem_grid1"
+        android:id="@+id/fragment_movieitem_grid"
         android:name="com.concavenp.nanodegree.popularmoviesimproved.MovieListingFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

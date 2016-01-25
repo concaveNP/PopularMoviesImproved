@@ -66,12 +66,12 @@ public class PopularMoviesDatabase extends SQLiteOpenHelper {
                         "(" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + // _ID - index
                         "%s INTEGER NOT NULL, " +                           // MOVIE_ID - themoviedb number
-                        "%s TEXT" +                                         // POSTER_PATH - the poster path for the given movie
+                        "%s TEXT NOT NULL" +                                         // JSON - the json data
                         ")",
                 PopularMoviesContract.DB_FAVORITES_TABLE,
                 PopularMoviesContract.FavoritesColumns._ID,
                 PopularMoviesContract.FavoritesColumns.MOVIE_ID,
-                PopularMoviesContract.FavoritesColumns.POSTER_PATH
+                PopularMoviesContract.FavoritesColumns.JSON
         );
 
         // Log the creation of the DB table SQL statement
