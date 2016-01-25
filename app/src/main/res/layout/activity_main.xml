@@ -46,20 +46,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
-<!--
-    <FrameLayout
-        android:id="@+id/main_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <include layout="@layout/main_frame"/>
 
-        <fragment
-            android:id="@+id/fragment_movieitem_grid"
-            android:name="com.concavenp.nanodegree.popularmoviesimproved.MovieListingFragment"
+    <!--
+        <FrameLayout
+            android:id="@+id/main_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_movieitem_grid" />
+            android:layout_height="match_parent">
 
-    /FrameLayout>
--->
+            <fragment
+                android:id="@+id/fragment_movieitem_grid"
+                android:name="com.concavenp.nanodegree.popularmoviesimproved.MovieListingFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_movieitem_grid" />
+
+        /FrameLayout>
+    -->
 
 </android.support.design.widget.CoordinatorLayout>

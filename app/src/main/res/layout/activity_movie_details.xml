@@ -69,16 +69,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_movie_details" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/favorite_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:src="@android:drawable/star_off"
-        app:layout_anchor="@id/movie_details_appbar"
-        app:layout_anchorGravity="bottom|right|end"/>
+    <!--
+        <include layout="@layout/content_movie_details" />
+    -->
 
 </android.support.design.widget.CoordinatorLayout>

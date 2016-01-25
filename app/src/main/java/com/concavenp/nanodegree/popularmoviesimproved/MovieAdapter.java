@@ -24,15 +24,12 @@
 package com.concavenp.nanodegree.popularmoviesimproved;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,7 +51,18 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
      * The logging tag string to be associated with log data for this class
      */
     private static final String TAG = MovieAdapter.class.getSimpleName();
+
     private ArrayList<MovieItems.MovieItem> mMovieItems = new ArrayList<>();
+
+    /**
+     * Interface that will be used for the signalling of a movie selection
+     */
+    private MovieListingFragment.OnMovieSelectionListener mListener;
+
+    public MovieAdapter(MovieListingFragment.OnMovieSelectionListener listener) {
+        super();
+        mListener = listener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -91,22 +99,16 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
             Picasso.with(context).load(posterURL).into(imageView);
         }
 
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                // Put out the movie title to the user
-                Toast.makeText(v.getContext(),mMovieItems.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-
-                // This ImageView has consumed the long click
-                return true;
-            }
-        });
-
         // Add a click listener to the view in order for the user to get more details about a selected movie
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+                mListener.onMovieSelection(mMovieItems.get(position));
+
+
+/*
                 // Convert the GSON object back to a JSON string in order to pass to the activity
                 Gson gson = new Gson();
                 String json = gson.toJson(mMovieItems.get(position));
@@ -116,6 +118,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
                 Intent intent = new Intent(context, MovieDetailsActivity.class);
                 intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
                 context.startActivity(intent);
+*/
             }
         });
     }

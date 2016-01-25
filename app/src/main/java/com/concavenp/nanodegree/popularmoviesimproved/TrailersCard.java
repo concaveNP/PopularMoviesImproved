@@ -110,6 +110,11 @@ public class TrailersCard extends CardView {
         mRequestQueue.add(request);
     }
 
+    public void removeAllViews() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
+        linearLayout.removeAllViews();
+    }
+
     private void processResponse(TrailerItems trailerItems) {
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);

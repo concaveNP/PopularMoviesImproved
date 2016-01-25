@@ -32,6 +32,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
+import com.google.gson.Gson;
+
 /**
  * This is the main activity of the application.  It displays a fragment that contains a listing
  * of the movies found via an API request to the themoviedb.org website service.
@@ -43,7 +46,9 @@ import android.view.MenuItem;
  * - Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
  * - Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieListingFragment.OnMovieSelectionListener {
+
+    private boolean mPhoneLayout = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +60,28 @@ public class MainActivity extends AppCompatActivity {
 
         // If the application has not run before then initialize the preference settings with default values
         if (savedInstanceState == null) {
+            // These are the "general" preferences (its all this app has)
             PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         }
 
-        // Create an instance of movie listing fragment
-        MovieListingFragment listingFragment = new MovieListingFragment();
+        // TODO: 1/24/2016 - fix comment
+        // Check whether the activity is using the layout version with
+        // the fragment_container FrameLayout. If so, then we are a phone layout vs. a tablet.
+        if (findViewById(R.id.main_frame) == null) {
+            mPhoneLayout = false;
+        }
 
-        // Add the fragment to the 'fragment_container' FrameLayout
-        getSupportFragmentManager().beginTransaction().add(R.id.main_content, listingFragment).commit();
+        /*
+        // Check whether the activity is using the layout version with
+        // the fragment_container FrameLayout. If so, we must add the first fragment
+        if (findViewById(R.id.fragment_container) != null) {
+            // Create an instance of movie listing fragment
+            MovieListingFragment listingFragment = new MovieListingFragment();
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction().add(R.id.main_content, listingFragment).commit();
+        }
+        */
     }
 
     @Override
@@ -81,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
 
-            // Create and start the details activity along with passing it the Movie Item details information via JSON string
+            // Create and start the settings activity
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
 
             // For now, give the activity some extra parameters that will tell it to use a specific
@@ -99,4 +118,25 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onMovieSelection(MovieItems.MovieItem item) {
+
+        if (mPhoneLayout) {
+
+            // Convert the GSON object back to a JSON string in order to pass to the activity
+            Gson gson = new Gson();
+            String json = gson.toJson(item);
+
+            // Create and start the details activity along with passing it the Movie Item details information via JSON string
+            Intent intent = new Intent(this, MovieDetailsActivity.class);
+            intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
+            startActivity(intent);
+
+        } else {
+
+            MovieDetailsFragment fragment = (MovieDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.movie_details_fragment);
+            fragment.updateMovieDetailInfo(item);
+
+        }
+    }
 }
