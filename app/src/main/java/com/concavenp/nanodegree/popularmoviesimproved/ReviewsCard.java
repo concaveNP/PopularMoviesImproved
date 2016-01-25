@@ -106,6 +106,11 @@ public class ReviewsCard extends CardView {
         mRequestQueue.add(request);
     }
 
+    public void removeAllViews() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
+        linearLayout.removeAllViews();
+    }
+
     private void processResponse(ReviewItems reviewItems) {
 
         Log.d(TAG, "total number of reviews: " + reviewItems.getTotal_results());

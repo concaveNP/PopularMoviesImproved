@@ -24,7 +24,6 @@
 package com.concavenp.nanodegree.popularmoviesimproved;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +46,7 @@ import com.google.gson.Gson;
  * - Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
  * - Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
  */
-public class MainActivity extends AppCompatActivity implements MovieDetailsFragment.OnFragmentInteractionListener, MovieListingFragment.OnMovieSelectionListener {
+public class MainActivity extends AppCompatActivity implements MovieListingFragment.OnMovieSelectionListener {
 
     private boolean mPhoneLayout = true;
 
@@ -120,12 +119,8 @@ public class MainActivity extends AppCompatActivity implements MovieDetailsFragm
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
     public void onMovieSelection(MovieItems.MovieItem item) {
+
         if (mPhoneLayout) {
 
             // Convert the GSON object back to a JSON string in order to pass to the activity
@@ -138,6 +133,9 @@ public class MainActivity extends AppCompatActivity implements MovieDetailsFragm
             startActivity(intent);
 
         } else {
+
+            MovieDetailsFragment fragment = (MovieDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.movie_details_fragment);
+            fragment.updateMovieDetailInfo(item);
 
         }
     }
