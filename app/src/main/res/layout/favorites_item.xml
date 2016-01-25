@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~     PopularMoviesImproved is an Android application that displays the most
   ~     currently trending popular movies as listed by themoviedb.org
@@ -23,24 +22,17 @@
   ~     You can contact the author via https://github.com/concaveNP
   -->
 
-<ViewFlipper
-    android:id="@+id/movies_ViewFlipper"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_Movies_GridView"
+    <ImageView
+        android:id="@+id/favorite_movie_ImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:scaleType="fitStart"/>
 
-    <GridView
-        android:id="@+id/main_favorite_movies_GridView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numColumns="2"/>
-
-</ViewFlipper>
-
+</LinearLayout>

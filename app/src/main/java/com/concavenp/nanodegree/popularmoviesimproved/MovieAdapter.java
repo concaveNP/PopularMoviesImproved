@@ -73,7 +73,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
         imageView.setScaleType(ImageView.ScaleType.FIT_START);
         imageView.setAdjustViewBounds(true);
         imageView.setClickable(true);
-        imageView.setLongClickable(true);
 
         ViewHolder viewHolder = new ViewHolder(imageView);
 
