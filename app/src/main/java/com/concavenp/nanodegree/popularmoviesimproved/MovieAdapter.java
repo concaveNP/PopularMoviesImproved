@@ -104,21 +104,9 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-
+                // Notify the the listener (aka MainActivity) of the movie selection
                 mListener.onMovieSelection(mMovieItems.get(position));
 
-
-/*
-                // Convert the GSON object back to a JSON string in order to pass to the activity
-                Gson gson = new Gson();
-                String json = gson.toJson(mMovieItems.get(position));
-
-                // Create and start the details activity along with passing it the Movie Item details information via JSON string
-                Context context = view.getContext();
-                Intent intent = new Intent(context, MovieDetailsActivity.class);
-                intent.putExtra(MovieDetailsActivity.EXTRA_DATA, json);
-                context.startActivity(intent);
-*/
             }
         });
     }
@@ -130,6 +118,11 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     public void add(MovieItems movieItems) {
         mMovieItems.addAll(movieItems.getResults());
+        this.notifyDataSetChanged();
+    }
+
+    public void clearData() {
+        mMovieItems.clear();
         this.notifyDataSetChanged();
     }
 

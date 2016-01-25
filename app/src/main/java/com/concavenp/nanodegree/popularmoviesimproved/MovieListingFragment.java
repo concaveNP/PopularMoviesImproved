@@ -26,6 +26,7 @@ package com.concavenp.nanodegree.popularmoviesimproved;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -66,6 +67,8 @@ public class MovieListingFragment extends Fragment {
      */
     private String mSortOrder;
 
+    private RecyclerView mRecyclerView;
+
     /**
      * The Adapter which will be used to populate the GridView with Views.
      */
@@ -76,6 +79,8 @@ public class MovieListingFragment extends Fragment {
      */
     private OnMovieSelectionListener mListener;
 
+    private EndlessRecyclerOnScrollListener mScrollListener;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -84,35 +89,74 @@ public class MovieListingFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Instantiate the RequestQueue.
+        mRequestQueue = Volley.newRequestQueue(getActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Get the sort type that should be used when requesting data from the movie DB
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String newSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key), getResources().getString(R.string.default_sorting_preference_value));
+
+        // Check to see if the sort orders have changed
+        if (!newSortOrder.equals(mSortOrder)) {
+
+            // The order has changed, save off the new sort order
+            mSortOrder = newSortOrder;
+
+            // Data in the adapter and scroll listener must be cleared out
+            mAdapter.clearData();
+            mScrollListener.initValues();
+
+            // Make the first web request for page one of the data
+            requestData(1);
+
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Set the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
-        // Instantiate the RequestQueue.
-        mRequestQueue = Volley.newRequestQueue(getActivity());
-
-        // Get the sort type that should be used when requesting data from the movie DB
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.main_Movies_GridView);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(mListener);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // TODO: 1/21/2016 - this should be driven by a resource value determined by phone/tablet
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(gridLayoutManager) {
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mScrollListener = new EndlessRecyclerOnScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 requestData(current_page);
             }
-        });
+        };
+        mRecyclerView.addOnScrollListener(mScrollListener);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
-
-        // Make the first web request for page one of the data
-        requestData(1);
+        mRecyclerView.setHasFixedSize(true);
 
         return view;
     }
