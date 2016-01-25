@@ -71,14 +71,4 @@
 
     <include layout="@layout/content_movie_details" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/favorite_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:src="@android:drawable/star_off"
-        app:layout_anchor="@id/movie_details_appbar"
-        app:layout_anchorGravity="bottom|right|end"/>
-
 </android.support.design.widget.CoordinatorLayout>

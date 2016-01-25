@@ -29,13 +29,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,7 +72,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private MovieItems.MovieItem mModel;
 
-    private FloatingActionButton mFab;
+    private ImageButton mFavoriteButton;
 
     /**
      * The Adapter which will be used to populate the favorite star.
@@ -102,30 +102,31 @@ public class MovieDetailsActivity extends AppCompatActivity {
         // This activity is not the home, so show the back arrow.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         // Allow marking this movie as a favorite
-        mFab = (FloatingActionButton) findViewById(R.id.favorite_fab);
-        mFab.setTag(new Boolean(false));
-        mFab.setOnClickListener(new View.OnClickListener() {
+        mFavoriteButton = (ImageButton) findViewById(R.id.imageButton);
+        mFavoriteButton.setTag(new Boolean(false));
+        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FloatingActionButton fab = (FloatingActionButton) view;
+                ImageButton imageButton = (ImageButton) view;
 
                 // Get current state via view tag
-                boolean favorite = (Boolean) fab.getTag();
+                boolean favorite = (Boolean) imageButton.getTag();
 
                 // Toggle state
                 favorite = !favorite;
-                fab.setTag(favorite);
+                imageButton.setTag(favorite);
 
                 // Update the DB to reflect the favorite selection
                 updateFavoriteMovieDB(favorite);
 
                 // Set button image accordingly
                 if (favorite) {
-                    fab.setImageResource(android.R.drawable.star_on);
+                    imageButton.setImageResource(android.R.drawable.btn_star_big_on);
                     Snackbar.make(view, "Movie is now a favorite", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } else {
-                    fab.setImageResource(android.R.drawable.star_off);
+                    imageButton.setImageResource(android.R.drawable.btn_star_big_off);
                     Snackbar.make(view, "Movie is no longer a favorite", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
@@ -259,21 +260,21 @@ public class MovieDetailsActivity extends AppCompatActivity {
             // Check to see if this movie is already a favorite
             if ((cursor != null) && (cursor.getCount() > 0)) {
                 // Yes, this is a favorite
-                mFab.setTag(new Boolean(true));
+                mFavoriteButton.setTag(new Boolean(true));
 
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.
-                mFab.setImageResource(android.R.drawable.star_on);
+                mFavoriteButton.setImageResource(android.R.drawable.btn_star_big_on);
 
                 // TODO: 1/19/2016 - must be a way to increase the star size - might have to pick another icon
 
             } else {
                 // No, this is NOT a favorite
-                mFab.setTag(new Boolean(false));
+                mFavoriteButton.setTag(new Boolean(false));
 
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.
-                mFab.setImageResource(android.R.drawable.star_off);
+                mFavoriteButton.setImageResource(android.R.drawable.btn_star_big_off);
             }
         }
 

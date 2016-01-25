@@ -23,6 +23,7 @@
 
 package com.concavenp.nanodegree.popularmoviesimproved;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -61,7 +62,7 @@ public class MovieListingFragment extends Fragment {
     private RequestQueue mRequestQueue;
 
     /**
-     * This
+     *
      */
     private String mSortOrder;
 
@@ -69,6 +70,11 @@ public class MovieListingFragment extends Fragment {
      * The Adapter which will be used to populate the GridView with Views.
      */
     private MovieAdapter mAdapter;
+
+    /**
+     * Interface that will be used for the signalling of a movie selection
+     */
+    private OnMovieSelectionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -90,7 +96,7 @@ public class MovieListingFragment extends Fragment {
         mSortOrder = prefs.getString(getResources().getString(R.string.sorting_preference_type_key),getResources().getString(R.string.default_sorting_preference_value)) ;
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.main_Movies_GridView);
-        mAdapter = new MovieAdapter();
+        mAdapter = new MovieAdapter(mListener);
         recyclerView.setAdapter(mAdapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // TODO: 1/21/2016 - this should be driven by a resource value determined by phone/tablet
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -130,11 +136,10 @@ public class MovieListingFragment extends Fragment {
         GsonRequest<MovieItems> request = new GsonRequest<>(url, MovieItems.class, null, new Response.Listener<MovieItems>() {
             @Override
             public void onResponse(MovieItems response) {
-                // First clear out any old data
-                //mAdapter.clear();
 
                 // Add the new data
                 mAdapter.add(response);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -153,5 +158,37 @@ public class MovieListingFragment extends Fragment {
         // Add the request to the RequestQueue.
         mRequestQueue.add(request);
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMovieSelectionListener) {
+            mListener = (OnMovieSelectionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnMovieSelectionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnMovieSelectionListener {
+        void onMovieSelection(MovieItems.MovieItem item);
+    }
+
 
 }

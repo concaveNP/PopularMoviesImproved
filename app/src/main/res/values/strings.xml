@@ -77,6 +77,5 @@
         <item>@string/popularity_title_value</item>
         <item>@string/vote_average_title_value</item>
     </string-array>
-    <!-- End of General settings -->
 
 </resources>
