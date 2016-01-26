@@ -48,21 +48,21 @@ import com.concavenp.nanodegree.popularmoviesimproved.gson.TrailerItems;
  */
 public class TrailersCard extends CardView {
 
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
+    // The logging tag string to be associated with log data for this class
     private static final String TAG = TrailersCard.class.getSimpleName();
 
-    // TODO: 1/19/2016 - this should be a resource value in order to potentially exploit phone vs. tablet space
-    private static final int MAX_REVIEWS = 2;
-
+    // The is the string for the first trailer link.  It is initialized to null on purpose.
     private String mFirstTrailer = null;
 
-    /**
-     * A Volley queue used for managing web interface requests
-     */
+    // A Volley queue used for managing web interface requests
     private RequestQueue mRequestQueue;
 
+    /**
+     * A default CardView constructor, but with the addition of initializing a Volley queue.
+     *
+     * @param context - View context we are in
+     * @param attrs   - View attributes to use
+     */
     public TrailersCard(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -112,6 +112,9 @@ public class TrailersCard extends CardView {
         mRequestQueue.add(request);
     }
 
+    /**
+     * Allows for the clearing of all data within the CardView.
+     */
     public void removeAllViews() {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
         linearLayout.removeAllViews();
@@ -120,6 +123,12 @@ public class TrailersCard extends CardView {
         mFirstTrailer = null;
     }
 
+    /**
+     * Processes the response back from the web request.  It will dynamically add views to the
+     * card view for display.
+     *
+     * @param trailerItems
+     */
     private void processResponse(TrailerItems trailerItems) {
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);

@@ -22,7 +22,7 @@
   -->
 
 <resources>
-    <string name="app_name">PopularMoviesImproved</string>
+    <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
 
     <!-- The base URL that will be used to query The Movie DB web services -->

@@ -59,38 +59,42 @@ import java.text.DecimalFormat;
  * create an instance of this fragment.
  *
  * Reference:
- * - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
- * - http://android-developers.blogspot.com/2012/02/share-with-intents.html
- * - http://developer.android.com/training/sharing/send.html
+ * - ActionBar items:
+ *      - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
+ * - Intents:
+ *      - http://android-developers.blogspot.com/2012/02/share-with-intents.html
+ *      - http://developer.android.com/training/sharing/send.html
+ * - Formatted text strings:
+ *      - (http://alvinalexander.com/blog/post/java/use-string-format-java-string-output)
  */
 public class MovieDetailsFragment extends Fragment {
-
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
-    private static final String TAG = MovieDetailsFragment.class.getSimpleName();
 
     // The fragment initialization parameter name used to store data as a argument
     private static final String ARG_MOVIE_ITEM = "movie_item";
 
+    // The star button that allows the user to choose this movie as a favorite
     private ImageButton mFavoriteButton;
 
+    // This flipper allows the content of the fragment to show the movie details or a message to
+    // the user telling them to make a movie selection in order for details to be seen.
     private ViewFlipper mFlipper;
 
+    // The model data that the details are populated with.  Defaulted to null on purpose.
     private MovieItems.MovieItem mModel = null;
 
+    // The CardView that shows all of the trails.  It is a field here because I need the first
+    // trailer entry from it in order to populate the share intent.
     private TrailersCard mTrailersCard;
 
-    /**
-     * The Adapter which will be used to populate the favorite star.
-     */
+    // The Adapter which will be used to populate the favorite star.
     private SimpleCursorAdapter mAdapter;
 
-    /**
-     * A Volley queue used for managing web interface requests
-     */
+    // A Volley queue used for managing web interface requests
     private RequestQueue mRequestQueue;
 
+    /**
+     * A required empty constructor
+     */
     public MovieDetailsFragment() {
         // Required empty public constructor
     }
@@ -228,6 +232,11 @@ public class MovieDetailsFragment extends Fragment {
         outState.putString(ARG_MOVIE_ITEM, json);
     }
 
+    /**
+     * Method that allows the model data to be updated
+     *
+     * @param item - The new movie details to set as the model and update the display accordingly
+     */
     public void updateMovieDetailInfo(MovieItems.MovieItem item) {
 
         mModel = item;
@@ -325,8 +334,15 @@ public class MovieDetailsFragment extends Fragment {
         reviewsCard.requestReviewsData(mModel.getId());
     }
 
+    /**
+     * Updates the DB according to the favorite state the user has chosen.
+     *
+     * @param favorite - True if a favorite, false otherwise
+     */
     private void updateFavoriteMovieDB(boolean favorite) {
 
+        // If it is a favorite then put an entry in the DB table, otherwise remove the
+        // entry from the table.
         if (favorite) {
 
             // Convert the GSON object back to a JSON string in order to pass to the activity
@@ -343,8 +359,6 @@ public class MovieDetailsFragment extends Fragment {
                             Integer.toString(mModel.getId())
                     };
 
-            // Add and entry in the JOIN table for this filter and newly added result
-            //getContentResolver().update(PopularMoviesContract.FAVORITES_CONTENT_URI, values, selection, selectionArgs );
             getContext().getContentResolver().insert(PopularMoviesContract.FAVORITES_CONTENT_URI, values);
 
         } else {
@@ -362,9 +376,15 @@ public class MovieDetailsFragment extends Fragment {
 
     private class LoadSearchTask extends AsyncTask<Integer, Void, Cursor> {
 
+        /**
+         * The background work will query the DB to see if the movie of interest is a favorite or not.
+         *
+         * @param params - Integer is the movie ID
+         * @return The results from the DB query
+         */
         @Override
         protected Cursor doInBackground(Integer... params) {
-            Cursor cursor = null;
+            Cursor cursor;
 
             // proper SQL syntax for us.
             SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
@@ -372,7 +392,7 @@ public class MovieDetailsFragment extends Fragment {
             // Set the table we're querying.
             qBuilder.setTables(PopularMoviesContract.DB_FAVORITES_TABLE);
 
-            // TODO: 1/18/2016 - null gives everything, but we don't need it
+            // Null gives everything.  This can potentially be updated for a little more smarts.
             String[] projection = null;
 
             String selection =
@@ -389,10 +409,18 @@ public class MovieDetailsFragment extends Fragment {
             return cursor;
         }
 
+        /**
+         * This will change the star to reflect the favorite state.  This just checks to see if
+         * there is any data found from the query.  If something was found then this is a favorite.
+         *
+         * @param cursor - The DB cursor of resulting data
+         */
         @Override
         protected void onPostExecute(Cursor cursor) {
+
             // Check to see if this movie is already a favorite
             if ((cursor != null) && (cursor.getCount() > 0)) {
+
                 // Yes, this is a favorite
                 mFavoriteButton.setTag(new Boolean(true));
 
@@ -400,15 +428,15 @@ public class MovieDetailsFragment extends Fragment {
                 // specify the ImageLoader that will be used to make the request.
                 mFavoriteButton.setImageResource(android.R.drawable.btn_star_big_on);
 
-                // TODO: 1/19/2016 - must be a way to increase the star size - might have to pick another icon
-
             } else {
+
                 // No, this is NOT a favorite
                 mFavoriteButton.setTag(new Boolean(false));
 
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.
                 mFavoriteButton.setImageResource(android.R.drawable.btn_star_big_off);
+
             }
         }
 
