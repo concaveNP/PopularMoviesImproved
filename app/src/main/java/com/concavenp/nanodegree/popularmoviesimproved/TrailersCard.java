@@ -143,32 +143,42 @@ public class TrailersCard extends CardView {
 
             View result = inflater.inflate(R.layout.trailers_item, linearLayout, false);
 
+            // Listener that will open up the YouTube web site to the specified address
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + v.getTag())));
+                }
+            };
+
+            // Add a listener for clicks
             ImageButton imageButton = (ImageButton) result.findViewById(R.id.play_ImageButton);
             imageButton.setTag(item.getKey());
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + v.getTag())));
-                                               }
-                                           }
-            );
+            imageButton.setOnClickListener(listener);
 
-            // Set the title of the trailer
+            // Set the title of the trailer also add a listener for clicks
             TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
             String title = item.getName();
+            textView.setTag(item.getKey());
+            textView.setOnClickListener(listener);
 
             // I've seen the title for various things turn up null, thus check for it.
             if (title != null) {
                 textView.setText(title);
             }
 
-
             linearLayout.addView(result);
         }
 
     }
 
+    /**
+     * Allows the containing view to call this method in order to populate a sharing intent.
+     *
+     * @return The string web address to the first trailer
+     */
     public String getFirstTrailer() {
         return mFirstTrailer;
     }
+
 }
