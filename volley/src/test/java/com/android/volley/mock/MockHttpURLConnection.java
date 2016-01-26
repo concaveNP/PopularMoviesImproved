@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -44,23 +44,23 @@ public class MockHttpURLConnection extends HttpURLConnection {
     }
 
     @Override
-    public void setDoOutput(boolean flag) {
-        mDoOutput = flag;
-    }
-
-    @Override
     public boolean getDoOutput() {
         return mDoOutput;
     }
 
     @Override
-    public void setRequestMethod(String method) {
-        mRequestMethod = method;
+    public void setDoOutput(boolean flag) {
+        mDoOutput = flag;
     }
 
     @Override
     public String getRequestMethod() {
         return mRequestMethod;
+    }
+
+    @Override
+    public void setRequestMethod(String method) {
+        mRequestMethod = method;
     }
 
     @Override

@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -32,12 +32,12 @@ public class MockResponseDelivery implements ResponseDelivery {
 
     public boolean postResponse_called = false;
     public boolean postError_called = false;
+    public Response<?> responsePosted = null;
 
     public boolean wasEitherResponseCalled() {
         return postResponse_called || postError_called;
     }
 
-    public Response<?> responsePosted = null;
     @Override
     public void postResponse(Request<?> request, Response<?> response) {
         postResponse_called = true;

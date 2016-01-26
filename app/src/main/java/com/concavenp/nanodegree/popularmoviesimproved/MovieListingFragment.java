@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * A fragment representing a list of MovieItem(s).
- * <p>
+ * <p/>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  */
@@ -158,16 +158,6 @@ public class MovieListingFragment extends Fragment implements android.support.v4
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Set the layout for this fragment
@@ -195,7 +185,7 @@ public class MovieListingFragment extends Fragment implements android.support.v4
         mRecyclerView = (RecyclerView) mFlipper.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(mListener);
         mRecyclerView.setAdapter(mAdapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2); // TODO: 1/21/2016 - this should be driven by a resource value determined by phone/tablet
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.number_of_columns));
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mScrollListener = new EndlessRecyclerOnScrollListener(gridLayoutManager) {
             @Override
@@ -310,7 +300,7 @@ public class MovieListingFragment extends Fragment implements android.support.v4
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -324,7 +314,7 @@ public class MovieListingFragment extends Fragment implements android.support.v4
         private OnMovieSelectionListener mListener;
 
         /**
-         * ???
+         * Constructor that gets the listener for movie selection changes
          *
          * @param listener - The listener that will receive notification of a movie selection
          */

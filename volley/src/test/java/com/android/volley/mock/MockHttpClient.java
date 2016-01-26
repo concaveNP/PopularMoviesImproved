@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ import org.apache.http.protocol.HttpContext;
 
 
 public class MockHttpClient implements HttpClient {
+    public HttpUriRequest requestExecuted = null;
     private int mStatusCode = HttpStatus.SC_OK;
     private HttpEntity mResponseEntity = null;
 
@@ -55,8 +56,6 @@ public class MockHttpClient implements HttpClient {
         }
         mStatusCode = statusCode;
     }
-
-    public HttpUriRequest requestExecuted = null;
 
     // This is the only one we actually use.
     @Override

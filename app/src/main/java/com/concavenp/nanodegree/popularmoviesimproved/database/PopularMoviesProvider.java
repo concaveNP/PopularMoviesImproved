@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -53,7 +53,6 @@ public class PopularMoviesProvider extends ContentProvider {
 
         mPopularMoviesDatabase = new PopularMoviesDatabase(getContext());
 
-        // TODO: 1/17/2016 - what does the return for this mean?
         return false;
     }
 

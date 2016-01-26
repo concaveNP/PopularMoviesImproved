@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import java.util.Map;
 
 /**
  * Example taken from: https://developer.android.com/training/volley/request-custom.html
- *
+ * <p/>
  * This class will be used to make Volley requests that will in turn be converted to a list of MovieItems.
  *
  * @param <T> The generic parameter that will be the GSON object containing the request results data
@@ -53,8 +53,8 @@ public class GsonRequest<T> extends Request<T> {
     /**
      * Make a GET request and return a parsed object from JSON.
      *
-     * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
+     * @param url     URL of the request to make
+     * @param clazz   Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
     public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
@@ -80,10 +80,10 @@ public class GsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             // Create a JSON string from the response data received
-            String json = new String( response.data, HttpHeaderParser.parseCharset(response.headers));
+            String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 
             // Convert the JSON string into a GSON object and return  the result
-            return Response.success( gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

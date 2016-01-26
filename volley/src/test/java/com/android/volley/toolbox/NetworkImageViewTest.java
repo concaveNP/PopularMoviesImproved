@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -31,10 +31,11 @@ import android.widget.ImageView.ScaleType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class NetworkImageViewTest {
@@ -59,24 +60,6 @@ public class NetworkImageViewTest {
     // // instrumentation test. Write this test once it's figured out.
     // }
 
-    private class MockImageLoader extends ImageLoader {
-        public MockImageLoader() {
-            super(null, null);
-        }
-
-        public String lastRequestUrl;
-        public int lastMaxWidth;
-        public int lastMaxHeight;
-
-        public ImageContainer get(String requestUrl, ImageListener imageListener, int maxWidth,
-                int maxHeight, ScaleType scaleType) {
-            lastRequestUrl = requestUrl;
-            lastMaxWidth = maxWidth;
-            lastMaxHeight = maxHeight;
-            return null;
-        }
-    }
-
     @Test
     public void publicMethods() throws Exception {
         // Catch-all test to find API-breaking changes.
@@ -88,5 +71,22 @@ public class NetworkImageViewTest {
         assertNotNull(NetworkImageView.class.getMethod("setImageUrl", String.class, ImageLoader.class));
         assertNotNull(NetworkImageView.class.getMethod("setDefaultImageResId", int.class));
         assertNotNull(NetworkImageView.class.getMethod("setErrorImageResId", int.class));
+    }
+
+    private class MockImageLoader extends ImageLoader {
+        public String lastRequestUrl;
+        public int lastMaxWidth;
+        public int lastMaxHeight;
+        public MockImageLoader() {
+            super(null, null);
+        }
+
+        public ImageContainer get(String requestUrl, ImageListener imageListener, int maxWidth,
+                int maxHeight, ScaleType scaleType) {
+            lastRequestUrl = requestUrl;
+            lastMaxWidth = maxWidth;
+            lastMaxHeight = maxHeight;
+            return null;
+        }
     }
 }

@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -34,6 +34,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MockRequest extends Request<byte[]> {
+    public boolean deliverResponse_called = false;
+    public boolean parseResponse_called = false;
+    public boolean deliverError_called = false;
+    public boolean cancel_called = false;
+    private Map<String, String> mPostParams = new HashMap<String, String>();
+    private String mCacheKey = super.getCacheKey();
+    private Priority mPriority = super.getPriority();
+
     public MockRequest() {
         super(Request.Method.GET, "http://foo.com", null);
     }
@@ -42,21 +50,13 @@ public class MockRequest extends Request<byte[]> {
         super(Request.Method.GET, url, listener);
     }
 
-    private Map<String, String> mPostParams = new HashMap<String, String>();
-
-    public void setPostParams(Map<String, String> postParams) {
-        mPostParams = postParams;
-    }
-
     @Override
     public Map<String, String> getPostParams() {
         return mPostParams;
     }
 
-    private String mCacheKey = super.getCacheKey();
-
-    public void setCacheKey(String cacheKey) {
-        mCacheKey = cacheKey;
+    public void setPostParams(Map<String, String> postParams) {
+        mPostParams = postParams;
     }
 
     @Override
@@ -64,15 +64,14 @@ public class MockRequest extends Request<byte[]> {
         return mCacheKey;
     }
 
-    public boolean deliverResponse_called = false;
-    public boolean parseResponse_called = false;
+    public void setCacheKey(String cacheKey) {
+        mCacheKey = cacheKey;
+    }
 
     @Override
     protected void deliverResponse(byte[] response) {
         deliverResponse_called = true;
     }
-
-    public boolean deliverError_called = false;
 
     @Override
     public void deliverError(VolleyError error) {
@@ -80,23 +79,19 @@ public class MockRequest extends Request<byte[]> {
         deliverError_called = true;
     }
 
-    public boolean cancel_called = false;
-
     @Override
     public void cancel() {
         cancel_called = true;
         super.cancel();
     }
 
-    private Priority mPriority = super.getPriority();
-
-    public void setPriority(Priority priority) {
-        mPriority = priority;
-    }
-
     @Override
     public Priority getPriority() {
         return mPriority;
+    }
+
+    public void setPriority(Priority priority) {
+        mPriority = priority;
     }
 
     @Override

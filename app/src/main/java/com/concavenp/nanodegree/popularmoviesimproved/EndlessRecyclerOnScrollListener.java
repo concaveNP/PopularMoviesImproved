@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -28,11 +28,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Code reused from:
- * https://gist.github.com/ssinss/e06f12ef66c51252563e
- * <p>
- * <p>
- * Created by dave on 1/21/2016.
+ * This code started off from the below references and then modified for me use.
+ * <p/>
+ * References:
+ * - https://gist.github.com/ssinss/e06f12ef66c51252563e
  */
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
 

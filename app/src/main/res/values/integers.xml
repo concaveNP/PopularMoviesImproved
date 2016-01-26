@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~     PopularMoviesImproved is an Android application that displays the most
   ~     currently trending popular movies as listed by themoviedb.org
@@ -21,12 +22,6 @@
   ~     You can contact the author via https://github.com/concaveNP
   -->
 
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="24dp"
-        android:height="24dp"
-        android:viewportHeight="24.0"
-        android:viewportWidth="24.0">
-    <path
-        android:fillColor="#FF000000"
-        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zm1,15h-2v-6h2v6zm0,-8h-2V7h2v2z"/>
-</vector>
+<resources>
+    <integer name="number_of_columns">2</integer>
+</resources>

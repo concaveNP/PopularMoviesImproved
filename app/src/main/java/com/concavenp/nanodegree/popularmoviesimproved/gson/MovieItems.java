@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * This is a GSON hand rolled class.
- *
+ * <p/>
  * Created by dave on 11/2/2015.
  */
 @SuppressWarnings("unused")
@@ -55,7 +55,7 @@ public class MovieItems {
         return total_results;
     }
 
-   public static class MovieItem {
+    public static class MovieItem {
 
         private boolean adult;
         private String backdrop_path;

@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -48,26 +48,37 @@ import com.concavenp.nanodegree.popularmoviesimproved.gson.TrailerItems;
  */
 public class TrailersCard extends CardView {
 
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
+    // The logging tag string to be associated with log data for this class
     private static final String TAG = TrailersCard.class.getSimpleName();
 
-    // TODO: 1/19/2016 - this should be a resource value in order to potentially exploit phone vs. tablet space
-    private static final int MAX_REVIEWS = 2;
-
+    // The is the string for the first trailer link.  It is initialized to null on purpose.
     private String mFirstTrailer = null;
 
-    /**
-     * A Volley queue used for managing web interface requests
-     */
+    // A Volley queue used for managing web interface requests
     private RequestQueue mRequestQueue;
 
+    /**
+     * A default CardView constructor, but with the addition of initializing a Volley queue.
+     *
+     * @param context - View context we are in
+     * @param attrs   - View attributes to use
+     */
     public TrailersCard(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // Instantiate the RequestQueue
         mRequestQueue = Volley.newRequestQueue(context);
+    }
+
+    /**
+     * Allows for the clearing of all data within the CardView.
+     */
+    public void removeAllViews() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
+        linearLayout.removeAllViews();
+
+        // Clear the first trailer
+        mFirstTrailer = null;
     }
 
     /**
@@ -112,14 +123,12 @@ public class TrailersCard extends CardView {
         mRequestQueue.add(request);
     }
 
-    public void removeAllViews() {
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
-        linearLayout.removeAllViews();
-
-        // Clear the first trailer
-        mFirstTrailer = null;
-    }
-
+    /**
+     * Processes the response back from the web request.  It will dynamically add views to the
+     * card view for display.
+     *
+     * @param trailerItems
+     */
     private void processResponse(TrailerItems trailerItems) {
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
@@ -129,37 +138,47 @@ public class TrailersCard extends CardView {
         for (TrailerItems.TrailerItem item : trailerItems.getResults()) {
 
             if (mFirstTrailer == null) {
-                mFirstTrailer = item.getKey();
+                mFirstTrailer = getResources().getString(R.string.intent_youtube_string) + item.getKey();
             }
 
             View result = inflater.inflate(R.layout.trailers_item, linearLayout, false);
 
+            // Listener that will open up the YouTube web site to the specified address
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.intent_youtube_string) + v.getTag())));
+                }
+            };
+
+            // Add a listener for clicks
             ImageButton imageButton = (ImageButton) result.findViewById(R.id.play_ImageButton);
             imageButton.setTag(item.getKey());
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + v.getTag())));
-                                               }
-                                           }
-            );
+            imageButton.setOnClickListener(listener);
 
-            // Set the title of the trailer
+            // Set the title of the trailer also add a listener for clicks
             TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
             String title = item.getName();
+            textView.setTag(item.getKey());
+            textView.setOnClickListener(listener);
 
             // I've seen the title for various things turn up null, thus check for it.
             if (title != null) {
                 textView.setText(title);
             }
 
-
             linearLayout.addView(result);
         }
 
     }
 
+    /**
+     * Allows the containing view to call this method in order to populate a sharing intent.
+     *
+     * @return The string web address to the first trailer
+     */
     public String getFirstTrailer() {
         return mFirstTrailer;
     }
+
 }

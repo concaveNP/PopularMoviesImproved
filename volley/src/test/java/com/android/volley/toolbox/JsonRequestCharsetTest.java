@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@ package com.android.volley.toolbox;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,13 +32,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.lang.Exception;
-import java.lang.String;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class JsonRequestCharsetTest {
@@ -59,6 +57,16 @@ public class JsonRequestCharsetTest {
     private static final String COPY_VALUE = "\u00a9";
     private static final String COPY_NAME = "copyright";
     private static final int COPY_INDEX = 1;
+
+    private static String jsonObjectString() throws Exception {
+        JSONObject json = new JSONObject().put(TEXT_NAME, TEXT_VALUE).put(COPY_NAME, COPY_VALUE);
+        return json.toString();
+    }
+
+    private static String jsonArrayString() throws Exception {
+        JSONArray json = new JSONArray().put(TEXT_INDEX, TEXT_VALUE).put(COPY_INDEX, COPY_VALUE);
+        return json.toString();
+    }
 
     @Test public void defaultCharsetJsonObject() throws Exception {
         // UTF-8 is default charset for JSON
@@ -112,15 +120,5 @@ public class JsonRequestCharsetTest {
         assertTrue(arrayResponse.isSuccess());
         assertEquals(TEXT_VALUE, arrayResponse.result.getString(TEXT_INDEX));
         // don't check the copyright symbol, ISO-8859-2 doesn't have it, but it has Czech characters
-    }
-
-    private static String jsonObjectString() throws Exception {
-        JSONObject json = new JSONObject().put(TEXT_NAME, TEXT_VALUE).put(COPY_NAME, COPY_VALUE);
-        return json.toString();
-    }
-
-    private static String jsonArrayString() throws Exception {
-        JSONArray json = new JSONArray().put(TEXT_INDEX, TEXT_VALUE).put(COPY_INDEX, COPY_VALUE);
-        return json.toString();
     }
 }

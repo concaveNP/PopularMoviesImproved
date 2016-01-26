@@ -4,7 +4,7 @@
   ~     currently trending popular movies as listed by themoviedb.org
   ~     website.
   ~
-  ~     Copyright (C) 2015 authored by David A. Todd
+  ~     Copyright (C) 2016 authored by David A. Todd
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/play_ImageButton"
+        android:clickable="true"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/primary_text_default_material_light"/>

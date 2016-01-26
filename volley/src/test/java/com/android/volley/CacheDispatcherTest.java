@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -35,19 +35,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings("rawtypes")
 public class CacheDispatcherTest {
+    private static final long TIMEOUT_MILLIS = 5000;
     private CacheDispatcher mDispatcher;
     private WaitableQueue mCacheQueue;
     private WaitableQueue mNetworkQueue;
     private MockCache mCache;
     private MockResponseDelivery mDelivery;
     private MockRequest mRequest;
-
-    private static final long TIMEOUT_MILLIS = 5000;
 
     @Before public void setUp() throws Exception {
         mCacheQueue = new WaitableQueue();

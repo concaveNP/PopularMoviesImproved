@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import com.android.volley.mock.MockNetwork;
 import com.android.volley.mock.MockRequest;
 import com.android.volley.mock.MockResponseDelivery;
 import com.android.volley.mock.WaitableQueue;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,19 +37,21 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class NetworkDispatcherTest {
+    private static final byte[] CANNED_DATA = "Ceci n'est pas une vraie reponse".getBytes();
+    private static final long TIMEOUT_MILLIS = 5000;
     private NetworkDispatcher mDispatcher;
     private MockResponseDelivery mDelivery;
     private WaitableQueue mNetworkQueue;
     private MockNetwork mNetwork;
     private MockCache mCache;
     private MockRequest mRequest;
-
-    private static final byte[] CANNED_DATA = "Ceci n'est pas une vraie reponse".getBytes();
-    private static final long TIMEOUT_MILLIS = 5000;
 
     @Before public void setUp() throws Exception {
         mDelivery = new MockResponseDelivery();

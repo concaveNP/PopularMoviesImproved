@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,9 +41,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmoviesimproved.database.PopularMoviesContract;
 import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
 import com.google.gson.Gson;
@@ -56,37 +55,41 @@ import java.text.DecimalFormat;
  * A simple {@link Fragment} subclass.
  * Use the {@link MovieDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p/>
  * Reference:
+ * - ActionBar items:
  * - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
+ * - Intents:
  * - http://android-developers.blogspot.com/2012/02/share-with-intents.html
+ * - http://developer.android.com/training/sharing/send.html
+ * - Formatted text strings:
+ * - (http://alvinalexander.com/blog/post/java/use-string-format-java-string-output)
  */
 public class MovieDetailsFragment extends Fragment {
-
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
-    private static final String TAG = MovieDetailsFragment.class.getSimpleName();
 
     // The fragment initialization parameter name used to store data as a argument
     private static final String ARG_MOVIE_ITEM = "movie_item";
 
+    // The star button that allows the user to choose this movie as a favorite
     private ImageButton mFavoriteButton;
 
-    private MovieItems.MovieItem mModel;
+    // This flipper allows the content of the fragment to show the movie details or a message to
+    // the user telling them to make a movie selection in order for details to be seen.
+    private ViewFlipper mFlipper;
 
+    // The model data that the details are populated with.  Defaulted to null on purpose.
+    private MovieItems.MovieItem mModel = null;
+
+    // The CardView that shows all of the trails.  It is a field here because I need the first
+    // trailer entry from it in order to populate the share intent.
     private TrailersCard mTrailersCard;
 
-    /**
-     * The Adapter which will be used to populate the favorite star.
-     */
+    // The Adapter which will be used to populate the favorite star.
     private SimpleCursorAdapter mAdapter;
 
     /**
-     * A Volley queue used for managing web interface requests
+     * A required empty constructor
      */
-    private RequestQueue mRequestQueue;
-
     public MovieDetailsFragment() {
         // Required empty public constructor
     }
@@ -123,13 +126,12 @@ public class MovieDetailsFragment extends Fragment {
             String json = getArguments().getString(ARG_MOVIE_ITEM);
 
             // Translate JSON into GSON object
-            Gson gson = new Gson();
-            mModel = gson.fromJson(json, MovieItems.MovieItem.class);
+            if (json != null) {
+                Gson gson = new Gson();
+                mModel = gson.fromJson(json, MovieItems.MovieItem.class);
+            }
 
         }
-
-        // Instantiate the RequestQueue
-        mRequestQueue = Volley.newRequestQueue(getActivity());
 
     }
 
@@ -140,18 +142,18 @@ public class MovieDetailsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
+        // Save off the flipper for use in decided which view to show
+        mFlipper = (ViewFlipper) view.findViewById(R.id.fragment_movie_ViewFlipper);
+
+        return view;
     }
 
     @Override
     public void onStart() {
-        super.onStart();
 
-        // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
+        super.onStart();
 
         Bundle args = getArguments();
 
@@ -172,7 +174,12 @@ public class MovieDetailsFragment extends Fragment {
             // Set article based on saved instance state defined during onCreateView
             updateMovieDetailInfo(mModel);
 
+        } else {
+            // There is no data to display so tell the user to choose something
+            mFlipper.setDisplayedChild(mFlipper.indexOfChild(mFlipper.findViewById(R.id.fragment_movie_TextView)));
+            setMenuVisibility(false);
         }
+
     }
 
     @Override
@@ -187,13 +194,14 @@ public class MovieDetailsFragment extends Fragment {
 
         // Handle item selection
         switch (item.getItemId()) {
+
             case R.id.share_trailer_item: {
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, mTrailersCard.getFirstTrailer());
                 sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, "Share trailer for this movie"));
+                startActivity(Intent.createChooser(sendIntent, "Share movie link"));
 
                 return true;
 
@@ -217,9 +225,23 @@ public class MovieDetailsFragment extends Fragment {
         outState.putString(ARG_MOVIE_ITEM, json);
     }
 
+    /**
+     * Method that allows the model data to be updated
+     *
+     * @param item - The new movie details to set as the model and update the display accordingly
+     */
     public void updateMovieDetailInfo(MovieItems.MovieItem item) {
 
         mModel = item;
+
+        // If there is model data then show the details otherwise tell the user to choose something
+        if (mModel != null) {
+            mFlipper.setDisplayedChild(mFlipper.indexOfChild(mFlipper.findViewById(R.id.content_movie_FrameLayout)));
+            setMenuVisibility(true);
+        } else {
+            mFlipper.setDisplayedChild(mFlipper.indexOfChild(mFlipper.findViewById(R.id.fragment_movie_TextView)));
+            setMenuVisibility(false);
+        }
 
         // Allow marking this movie as a favorite
         mFavoriteButton = (ImageButton) getActivity().findViewById(R.id.imageButton);
@@ -305,8 +327,15 @@ public class MovieDetailsFragment extends Fragment {
         reviewsCard.requestReviewsData(mModel.getId());
     }
 
+    /**
+     * Updates the DB according to the favorite state the user has chosen.
+     *
+     * @param favorite - True if a favorite, false otherwise
+     */
     private void updateFavoriteMovieDB(boolean favorite) {
 
+        // If it is a favorite then put an entry in the DB table, otherwise remove the
+        // entry from the table.
         if (favorite) {
 
             // Convert the GSON object back to a JSON string in order to pass to the activity
@@ -317,14 +346,6 @@ public class MovieDetailsFragment extends Fragment {
             values.put(PopularMoviesContract.FavoritesColumns.MOVIE_ID, mModel.getId());
             values.put(PopularMoviesContract.FavoritesColumns.JSON, json);
 
-            String selection = PopularMoviesContract.FavoritesColumns.MOVIE_ID + " = ?";
-            String[] selectionArgs =
-                    {
-                            Integer.toString(mModel.getId())
-                    };
-
-            // Add and entry in the JOIN table for this filter and newly added result
-            //getContentResolver().update(PopularMoviesContract.FAVORITES_CONTENT_URI, values, selection, selectionArgs );
             getContext().getContentResolver().insert(PopularMoviesContract.FAVORITES_CONTENT_URI, values);
 
         } else {
@@ -342,9 +363,15 @@ public class MovieDetailsFragment extends Fragment {
 
     private class LoadSearchTask extends AsyncTask<Integer, Void, Cursor> {
 
+        /**
+         * The background work will query the DB to see if the movie of interest is a favorite or not.
+         *
+         * @param params - Integer is the movie ID
+         * @return The results from the DB query
+         */
         @Override
         protected Cursor doInBackground(Integer... params) {
-            Cursor cursor = null;
+            Cursor cursor;
 
             // proper SQL syntax for us.
             SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
@@ -352,7 +379,7 @@ public class MovieDetailsFragment extends Fragment {
             // Set the table we're querying.
             qBuilder.setTables(PopularMoviesContract.DB_FAVORITES_TABLE);
 
-            // TODO: 1/18/2016 - null gives everything, but we don't need it
+            // Null gives everything.  This can potentially be updated for a little more smarts.
             String[] projection = null;
 
             String selection =
@@ -364,15 +391,24 @@ public class MovieDetailsFragment extends Fragment {
                     };
 
             // Build a query to see if the name has an entry in the filters table
-            cursor = getContext().getContentResolver().query(PopularMoviesContract.FAVORITES_CONTENT_URI, projection, selection, selectionArgs, PopularMoviesContract.FAVORITES_DEFAULT_SORT);
+            cursor = getContext().getContentResolver().query(PopularMoviesContract.FAVORITES_CONTENT_URI,
+                    projection, selection, selectionArgs, PopularMoviesContract.FAVORITES_DEFAULT_SORT);
 
             return cursor;
         }
 
+        /**
+         * This will change the star to reflect the favorite state.  This just checks to see if
+         * there is any data found from the query.  If something was found then this is a favorite.
+         *
+         * @param cursor - The DB cursor of resulting data
+         */
         @Override
         protected void onPostExecute(Cursor cursor) {
+
             // Check to see if this movie is already a favorite
             if ((cursor != null) && (cursor.getCount() > 0)) {
+
                 // Yes, this is a favorite
                 mFavoriteButton.setTag(new Boolean(true));
 
@@ -380,15 +416,15 @@ public class MovieDetailsFragment extends Fragment {
                 // specify the ImageLoader that will be used to make the request.
                 mFavoriteButton.setImageResource(android.R.drawable.btn_star_big_on);
 
-                // TODO: 1/19/2016 - must be a way to increase the star size - might have to pick another icon
-
             } else {
+
                 // No, this is NOT a favorite
                 mFavoriteButton.setTag(new Boolean(false));
 
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.
                 mFavoriteButton.setImageResource(android.R.drawable.btn_star_big_off);
+
             }
         }
 

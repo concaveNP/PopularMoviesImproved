@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -37,10 +37,10 @@ import java.util.ArrayList;
 /**
  * This adapter class is used for adapting a {@code MovieItem} for views displayed within
  * the list of movies in the {@code MovieListingFragment}.
- *
+ * <p/>
  * Items are passed into the class when results are retrieved from a RESTful call.  The model data
  * given to the class is in the form of GSON objects that have been built from returned JSON data.
- *
+ * <p/>
  * This adapter establishes a link between the displayed movie item view and bringing up details
  * about the movie via a OnClickListener on view.  Clicking it will transition to a movie details
  * activity {@code MovieDetailsActivity}.
