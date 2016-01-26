@@ -138,7 +138,7 @@ public class TrailersCard extends CardView {
         for (TrailerItems.TrailerItem item : trailerItems.getResults()) {
 
             if (mFirstTrailer == null) {
-                mFirstTrailer = item.getKey();
+                mFirstTrailer = getResources().getString(R.string.intent_youtube_string) + item.getKey();
             }
 
             View result = inflater.inflate(R.layout.trailers_item, linearLayout, false);
@@ -147,7 +147,7 @@ public class TrailersCard extends CardView {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + v.getTag())));
+                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.intent_youtube_string) + v.getTag())));
                 }
             };
 

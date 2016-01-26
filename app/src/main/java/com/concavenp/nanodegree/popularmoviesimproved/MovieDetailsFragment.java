@@ -43,8 +43,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.concavenp.nanodegree.popularmoviesimproved.database.PopularMoviesContract;
 import com.concavenp.nanodegree.popularmoviesimproved.gson.MovieItems;
 import com.google.gson.Gson;
@@ -57,15 +55,15 @@ import java.text.DecimalFormat;
  * A simple {@link Fragment} subclass.
  * Use the {@link MovieDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
+ * <p/>
  * Reference:
  * - ActionBar items:
- *      - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
+ * - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
  * - Intents:
- *      - http://android-developers.blogspot.com/2012/02/share-with-intents.html
- *      - http://developer.android.com/training/sharing/send.html
+ * - http://android-developers.blogspot.com/2012/02/share-with-intents.html
+ * - http://developer.android.com/training/sharing/send.html
  * - Formatted text strings:
- *      - (http://alvinalexander.com/blog/post/java/use-string-format-java-string-output)
+ * - (http://alvinalexander.com/blog/post/java/use-string-format-java-string-output)
  */
 public class MovieDetailsFragment extends Fragment {
 
@@ -88,9 +86,6 @@ public class MovieDetailsFragment extends Fragment {
 
     // The Adapter which will be used to populate the favorite star.
     private SimpleCursorAdapter mAdapter;
-
-    // A Volley queue used for managing web interface requests
-    private RequestQueue mRequestQueue;
 
     /**
      * A required empty constructor
@@ -137,9 +132,6 @@ public class MovieDetailsFragment extends Fragment {
             }
 
         }
-
-        // Instantiate the RequestQueue
-        mRequestQueue = Volley.newRequestQueue(getActivity());
 
     }
 
@@ -202,13 +194,14 @@ public class MovieDetailsFragment extends Fragment {
 
         // Handle item selection
         switch (item.getItemId()) {
+
             case R.id.share_trailer_item: {
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, mTrailersCard.getFirstTrailer());
                 sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, "Share trailer for this movie"));
+                startActivity(Intent.createChooser(sendIntent, "Share movie link"));
 
                 return true;
 
@@ -353,12 +346,6 @@ public class MovieDetailsFragment extends Fragment {
             values.put(PopularMoviesContract.FavoritesColumns.MOVIE_ID, mModel.getId());
             values.put(PopularMoviesContract.FavoritesColumns.JSON, json);
 
-            String selection = PopularMoviesContract.FavoritesColumns.MOVIE_ID + " = ?";
-            String[] selectionArgs =
-                    {
-                            Integer.toString(mModel.getId())
-                    };
-
             getContext().getContentResolver().insert(PopularMoviesContract.FAVORITES_CONTENT_URI, values);
 
         } else {
@@ -404,7 +391,8 @@ public class MovieDetailsFragment extends Fragment {
                     };
 
             // Build a query to see if the name has an entry in the filters table
-            cursor = getContext().getContentResolver().query(PopularMoviesContract.FAVORITES_CONTENT_URI, projection, selection, selectionArgs, PopularMoviesContract.FAVORITES_DEFAULT_SORT);
+            cursor = getContext().getContentResolver().query(PopularMoviesContract.FAVORITES_CONTENT_URI,
+                    projection, selection, selectionArgs, PopularMoviesContract.FAVORITES_DEFAULT_SORT);
 
             return cursor;
         }

@@ -37,11 +37,10 @@ import com.squareup.picasso.Picasso;
 /**
  * Activity that is brought up when the user selects a movie item from the main activity.  For the
  * given movie it will display extra information about the movie.
- *
+ * <p/>
  * References:
  * - For CardView example:
- *      - http://arjunu.com/2015/10/android-recyclerview-with-different-cardviews/
- *
+ * - http://arjunu.com/2015/10/android-recyclerview-with-different-cardviews/
  */
 public class MovieDetailsActivity extends AppCompatActivity {
 

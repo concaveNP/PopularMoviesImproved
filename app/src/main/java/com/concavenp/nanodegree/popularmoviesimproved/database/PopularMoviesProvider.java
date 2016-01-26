@@ -53,7 +53,6 @@ public class PopularMoviesProvider extends ContentProvider {
 
         mPopularMoviesDatabase = new PopularMoviesDatabase(getContext());
 
-        // TODO: 1/17/2016 - what does the return for this mean?
         return false;
     }
 

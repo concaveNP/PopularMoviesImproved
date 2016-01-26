@@ -56,7 +56,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * A fragment representing a list of MovieItem(s).
- * <p>
+ * <p/>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  */
@@ -300,7 +300,7 @@ public class MovieListingFragment extends Fragment implements android.support.v4
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -314,7 +314,7 @@ public class MovieListingFragment extends Fragment implements android.support.v4
         private OnMovieSelectionListener mListener;
 
         /**
-         * ???
+         * Constructor that gets the listener for movie selection changes
          *
          * @param listener - The listener that will receive notification of a movie selection
          */

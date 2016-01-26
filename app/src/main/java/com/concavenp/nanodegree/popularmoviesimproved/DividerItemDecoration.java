@@ -34,9 +34,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * todo - references
- * https://gist.github.com/alexfu/0f464fc3742f134ccd1e
- * http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview/27037230#27037230
+ * This code was taken as a starting point the listed references.  I just wanted to place a
+ * divider decoration between items movie reviews in a reviews activity.  RecyclerView does not
+ * really seem to provide a good solution for this.
+ * <p/>
+ * References:
+ * - https://gist.github.com/alexfu/0f464fc3742f134ccd1e
+ * - http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview/27037230#27037230
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

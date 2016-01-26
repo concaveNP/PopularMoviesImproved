@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * This is a GSON hand rolled class.
- *
+ * <p/>
  * Created by dave on 11/2/2015.
  */
 @SuppressWarnings("unused")
@@ -55,7 +55,7 @@ public class MovieItems {
         return total_results;
     }
 
-   public static class MovieItem {
+    public static class MovieItem {
 
         private boolean adult;
         private String backdrop_path;

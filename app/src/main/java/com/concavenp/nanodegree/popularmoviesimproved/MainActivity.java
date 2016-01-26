@@ -38,10 +38,10 @@ import com.google.gson.Gson;
 /**
  * This is the main activity of the application.  It displays a fragment that contains a listing
  * of the movies found via an API request to the themoviedb.org website service.
- *
+ * <p/>
  * There is a settings menu option that is displayed that will open a Preferences activity for the
  * user to choose what data is requested in a web service.
- *
+ * <p/>
  * Development References:
  * - Creating a Fragment - http://developer.android.com/training/basics/fragments/creating.html
  * - Learning Android: Develop Mobile Apps Using Java and Eclipse - Chapter 8 Fragments
@@ -64,24 +64,11 @@ public class MainActivity extends AppCompatActivity implements MovieListingFragm
             PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         }
 
-        // TODO: 1/24/2016 - fix comment
-        // Check whether the activity is using the layout version with
-        // the fragment_container FrameLayout. If so, then we are a phone layout vs. a tablet.
+        // Determine if we are a phone or tablet
         if (findViewById(R.id.main_frame) == null) {
             mPhoneLayout = false;
         }
 
-        /*
-        // Check whether the activity is using the layout version with
-        // the fragment_container FrameLayout. If so, we must add the first fragment
-        if (findViewById(R.id.fragment_container) != null) {
-            // Create an instance of movie listing fragment
-            MovieListingFragment listingFragment = new MovieListingFragment();
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction().add(R.id.main_content, listingFragment).commit();
-        }
-        */
     }
 
     @Override

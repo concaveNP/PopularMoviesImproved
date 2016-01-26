@@ -34,6 +34,8 @@
     <string name="part_url_api_key">&amp;api_key=</string>
     <string name="part_url_api_key_dude">api_key=</string>
 
+    <string name="intent_youtube_string">http://www.youtube.com/watch?v=</string>
+
     <string name="title_activity_movie_details">Movie Details</string>
     <string name="popularity_label_string">Popularity</string>
     <string name="votes_label_string">Rating:</string>

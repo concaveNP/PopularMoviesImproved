@@ -39,7 +39,6 @@ public class PopularMoviesDatabase extends SQLiteOpenHelper {
     private static final String TAG = PopularMoviesDatabase.class.getSimpleName();
 
     public PopularMoviesDatabase(Context context) {
-        // TODO: find out what a CursorFactory is - its the null arg
         super(context, PopularMoviesContract.DB_NAME, null, PopularMoviesContract.DB_VERSION);
     }
 
@@ -47,7 +46,7 @@ public class PopularMoviesDatabase extends SQLiteOpenHelper {
      * Call when the database is created
      *
      * @param db - The actual DB object that Android is providing us
-     *           <p>
+     *           <p/>
      *           {@inheritDoc}
      */
     @Override
@@ -83,7 +82,7 @@ public class PopularMoviesDatabase extends SQLiteOpenHelper {
 
     /**
      * Gets called whenever existing version does not equal the new version
-     * <p>
+     * <p/>
      * {@inheritDoc}
      */
     @Override

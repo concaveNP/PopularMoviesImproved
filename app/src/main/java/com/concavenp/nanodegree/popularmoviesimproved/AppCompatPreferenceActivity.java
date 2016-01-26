@@ -37,7 +37,7 @@ import android.view.ViewGroup;
 /**
  * This class started as generated code from Android Studio and adapted to the
  * Popular Movies app.
- *
+ * <p/>
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
  */
