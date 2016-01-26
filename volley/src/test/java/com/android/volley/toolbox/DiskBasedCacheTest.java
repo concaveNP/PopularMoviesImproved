@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ package com.android.volley.toolbox;
 
 import com.android.volley.Cache;
 import com.android.volley.toolbox.DiskBasedCache.CacheHeader;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -33,7 +34,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DiskBasedCacheTest {
 

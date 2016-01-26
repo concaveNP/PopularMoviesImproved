@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -24,11 +24,14 @@
 package com.android.volley;
 
 import com.android.volley.Request.Priority;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class RequestTest {
@@ -52,6 +55,20 @@ public class RequestTest {
         assertTrue(immediate.compareTo(high) < 0);
     }
 
+    @Test
+    public void urlParsing() {
+        UrlParseRequest nullUrl = new UrlParseRequest(null);
+        assertEquals(0, nullUrl.getTrafficStatsTag());
+        UrlParseRequest emptyUrl = new UrlParseRequest("");
+        assertEquals(0, emptyUrl.getTrafficStatsTag());
+        UrlParseRequest noHost = new UrlParseRequest("http:///");
+        assertEquals(0, noHost.getTrafficStatsTag());
+        UrlParseRequest badProtocol = new UrlParseRequest("bad:http://foo");
+        assertEquals(0, badProtocol.getTrafficStatsTag());
+        UrlParseRequest goodProtocol = new UrlParseRequest("http://foo");
+        assertFalse(0 == goodProtocol.getTrafficStatsTag());
+    }
+
     private class TestRequest extends Request<Object> {
         private Priority mPriority = Priority.NORMAL;
         public TestRequest(Priority priority) {
@@ -72,19 +89,6 @@ public class RequestTest {
         protected Response<Object> parseNetworkResponse(NetworkResponse response) {
             return null;
         }
-    }
-
-    @Test public void urlParsing() {
-        UrlParseRequest nullUrl = new UrlParseRequest(null);
-        assertEquals(0, nullUrl.getTrafficStatsTag());
-        UrlParseRequest emptyUrl = new UrlParseRequest("");
-        assertEquals(0, emptyUrl.getTrafficStatsTag());
-        UrlParseRequest noHost = new UrlParseRequest("http:///");
-        assertEquals(0, noHost.getTrafficStatsTag());
-        UrlParseRequest badProtocol = new UrlParseRequest("bad:http://foo");
-        assertEquals(0, badProtocol.getTrafficStatsTag());
-        UrlParseRequest goodProtocol = new UrlParseRequest("http://foo");
-        assertFalse(0 == goodProtocol.getTrafficStatsTag());
     }
 
     private class UrlParseRequest extends Request<Object> {

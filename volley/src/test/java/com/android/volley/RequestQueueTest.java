@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ package com.android.volley;
 import com.android.volley.mock.ShadowSystemClock;
 import com.android.volley.toolbox.NoCache;
 import com.android.volley.utils.ImmediateResponseDelivery;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,8 +34,10 @@ import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**

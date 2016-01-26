@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,8 +25,10 @@ package com.android.volley.toolbox;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +36,13 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class ImageLoaderTest {

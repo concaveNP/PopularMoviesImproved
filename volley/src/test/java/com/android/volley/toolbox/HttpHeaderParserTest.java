@@ -3,7 +3,7 @@
  *     currently trending popular movies as listed by themoviedb.org
  *     website.
  *
- *     Copyright (C) 2015 authored by David A. Todd
+ *     Copyright (C) 2016 authored by David A. Todd
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -40,7 +40,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class HttpHeaderParserTest {
@@ -52,6 +55,11 @@ public class HttpHeaderParserTest {
 
     private NetworkResponse response;
     private Map<String, String> headers;
+
+    private static String rfc1123Date(long millis) {
+        DateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+        return df.format(new Date(millis));
+    }
 
     @Before public void setUp() throws Exception {
         headers = new HashMap<String, String>();
@@ -224,11 +232,6 @@ public class HttpHeaderParserTest {
     private void assertEqualsWithin(long expected, long value, long fudgeFactor) {
         long diff = Math.abs(expected - value);
         assertTrue(diff < fudgeFactor);
-    }
-
-    private static String rfc1123Date(long millis) {
-        DateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
-        return df.format(new Date(millis));
     }
 
     // --------------------------
