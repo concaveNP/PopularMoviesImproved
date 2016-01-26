@@ -56,6 +56,8 @@ public class TrailersCard extends CardView {
     // TODO: 1/19/2016 - this should be a resource value in order to potentially exploit phone vs. tablet space
     private static final int MAX_REVIEWS = 2;
 
+    private String mFirstTrailer = null;
+
     /**
      * A Volley queue used for managing web interface requests
      */
@@ -113,6 +115,9 @@ public class TrailersCard extends CardView {
     public void removeAllViews() {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
         linearLayout.removeAllViews();
+
+        // Clear the first trailer
+        mFirstTrailer = null;
     }
 
     private void processResponse(TrailerItems trailerItems) {
@@ -123,8 +128,11 @@ public class TrailersCard extends CardView {
 
         for (TrailerItems.TrailerItem item : trailerItems.getResults()) {
 
-            View result = inflater.inflate(R.layout.trailers_item, linearLayout, false);
+            if (mFirstTrailer == null) {
+                mFirstTrailer = item.getKey();
+            }
 
+            View result = inflater.inflate(R.layout.trailers_item, linearLayout, false);
 
             ImageButton imageButton = (ImageButton) result.findViewById(R.id.play_ImageButton);
             imageButton.setTag(item.getKey());
@@ -149,5 +157,9 @@ public class TrailersCard extends CardView {
             linearLayout.addView(result);
         }
 
+    }
+
+    public String getFirstTrailer() {
+        return mFirstTrailer;
     }
 }
