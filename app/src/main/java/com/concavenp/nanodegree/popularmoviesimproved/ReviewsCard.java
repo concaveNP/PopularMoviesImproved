@@ -47,21 +47,24 @@ import com.concavenp.nanodegree.popularmoviesimproved.gson.ReviewItems;
  */
 public class ReviewsCard extends CardView {
 
-    /**
-     * The logging tag string to be associated with log data for this class
-     */
+    // The logging tag string to be associated with log data for this class
     private static final String TAG = ReviewsCard.class.getSimpleName();
 
-    // TODO: 1/19/2016 - this should be a resource value in order to potentially exploit phone vs. tablet space
+    // The maximum number of reviews to show
     private static final int MAX_REVIEWS = 2;
 
-    /**
-     * A Volley queue used for managing web interface requests
-     */
+    // A Volley queue used for managing web interface requests
     private RequestQueue mRequestQueue;
 
+    // The themoviedb DB ID for this movie in question
     private int mMovieId;
 
+    /**
+     * A default CardView constructor, but with the addition of initializing a Volley queue.
+     *
+     * @param context - View context we are in
+     * @param attrs   - View attributes to use
+     */
     public ReviewsCard(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -69,11 +72,30 @@ public class ReviewsCard extends CardView {
         mRequestQueue = Volley.newRequestQueue(context);
     }
 
+    /**
+     * Allows for the clearing of all data within the CardView.
+     */
+    public void removeAllViews() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
+        linearLayout.removeAllViews();
+
+        // The button is "GONE" by default, so make it so
+        Button reviewsButton = (Button) findViewById(R.id.reviews_Button);
+        reviewsButton.setVisibility(GONE);
+    }
+
+    /**
+     * Method that will create a request object that will be added the Volley request queue for
+     * processing.  The request will translate the JSON response data into a GSON populated object.
+     * The adapter will then be given the new data which will in turn update the displayed listing
+     * of movie trailers to the user.
+     *
+     * @param id - This themoviedb database index for the movie question
+     */
     public void requestReviewsData(int id) {
 
         mMovieId = id;
 
-        // TODO: 1/22/2016 - hard coded strings ? are optional and & are required
         String url =
                 String.format(getResources().getString(R.string.base_url_review_request), id) +
                         "?" +
@@ -106,11 +128,12 @@ public class ReviewsCard extends CardView {
         mRequestQueue.add(request);
     }
 
-    public void removeAllViews() {
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
-        linearLayout.removeAllViews();
-    }
-
+    /**
+     * Processes the response back from the web request.  It will dynamically add views to the
+     * card view for display.
+     *
+     * @param reviewItems - The list of data items to display
+     */
     private void processResponse(ReviewItems reviewItems) {
 
         Log.d(TAG, "total number of reviews: " + reviewItems.getTotal_results());
@@ -120,8 +143,11 @@ public class ReviewsCard extends CardView {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         boolean showMoreReviewsButton = false;
+
+        // The number reviews to display
         int numberOfReviewsToDisplay;
 
+        // Only what to show a maximum number of reviews, so determine how many here
         if (reviewItems.getResults().size() > MAX_REVIEWS) {
             showMoreReviewsButton = true;
             numberOfReviewsToDisplay = MAX_REVIEWS;
@@ -180,8 +206,6 @@ public class ReviewsCard extends CardView {
 
         }
 
-
-
-
     }
+
 }

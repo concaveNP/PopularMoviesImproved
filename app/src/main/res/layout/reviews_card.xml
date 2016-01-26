@@ -61,7 +61,8 @@ todo - reference
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Full Reviews"/>
+            android:text="Full Reviews"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

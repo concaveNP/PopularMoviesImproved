@@ -71,6 +71,17 @@ public class TrailersCard extends CardView {
     }
 
     /**
+     * Allows for the clearing of all data within the CardView.
+     */
+    public void removeAllViews() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
+        linearLayout.removeAllViews();
+
+        // Clear the first trailer
+        mFirstTrailer = null;
+    }
+
+    /**
      * Method that will create a request object that will be added the Volley request queue for
      * processing.  The request will translate the JSON response data into a GSON populated object.
      * The adapter will then be given the new data which will in turn update the displayed listing
@@ -110,17 +121,6 @@ public class TrailersCard extends CardView {
 
         // Add the request to the RequestQueue.
         mRequestQueue.add(request);
-    }
-
-    /**
-     * Allows for the clearing of all data within the CardView.
-     */
-    public void removeAllViews() {
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
-        linearLayout.removeAllViews();
-
-        // Clear the first trailer
-        mFirstTrailer = null;
     }
 
     /**
