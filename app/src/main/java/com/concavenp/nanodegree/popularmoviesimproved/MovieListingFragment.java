@@ -66,17 +66,23 @@ public class MovieListingFragment extends Fragment implements android.support.v4
      * The logging tag string to be associated with log data for this class
      */
     private static final String TAG = MovieListingFragment.class.getSimpleName();
+
     private static final int LOADER_ID = 42;
+
     private static final String[] FROM = {
             PopularMoviesContract.FavoritesColumns.JSON
     };
+
     private static final int[] TO = {
             R.id.favorite_movie_ImageView
     };
+
     private static final ResultsViewBinder VIEW_BINDER = new ResultsViewBinder();
+
     /**
      * A Volley queue used for managing web interface requests
      */
+
     private RequestQueue mRequestQueue;
     /**
      *
@@ -113,11 +119,6 @@ public class MovieListingFragment extends Fragment implements android.support.v4
 
         // Initialize the DB loader
         getLoaderManager().initLoader(LOADER_ID, null, this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

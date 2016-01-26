@@ -24,6 +24,7 @@
 package com.concavenp.nanodegree.popularmoviesimproved;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.AsyncTask;
@@ -32,6 +33,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -52,6 +56,10 @@ import java.text.DecimalFormat;
  * A simple {@link Fragment} subclass.
  * Use the {@link MovieDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * Reference:
+ * - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
+ * - http://android-developers.blogspot.com/2012/02/share-with-intents.html
  */
 public class MovieDetailsFragment extends Fragment {
 
@@ -66,6 +74,8 @@ public class MovieDetailsFragment extends Fragment {
     private ImageButton mFavoriteButton;
 
     private MovieItems.MovieItem mModel;
+
+    private TrailersCard mTrailersCard;
 
     /**
      * The Adapter which will be used to populate the favorite star.
@@ -126,6 +136,9 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Need to display the share trailer action bar icon
+        setHasOptionsMenu(true);
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_movie_details, container, false);
 
@@ -158,6 +171,36 @@ public class MovieDetailsFragment extends Fragment {
 
             // Set article based on saved instance state defined during onCreateView
             updateMovieDetailInfo(mModel);
+
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.share_trailer, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.share_trailer_item: {
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, mTrailersCard.getFirstTrailer());
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, "Share trailer for this movie"));
+
+                return true;
+
+            }
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
 
         }
     }
@@ -252,9 +295,9 @@ public class MovieDetailsFragment extends Fragment {
         synopsisTextView.setText(mModel.getOverview());
 
         // Make the web request for trailer data
-        TrailersCard trailersCard = (TrailersCard) getActivity().findViewById(R.id.trailers_cardview);
-        trailersCard.removeAllViews();
-        trailersCard.requestTrailersData(mModel.getId());
+        mTrailersCard = (TrailersCard) getActivity().findViewById(R.id.trailers_cardview);
+        mTrailersCard.removeAllViews();
+        mTrailersCard.requestTrailersData(mModel.getId());
 
         // Make the web request for reviews data
         ReviewsCard reviewsCard = (ReviewsCard) getActivity().findViewById(R.id.reviews_cardview);
