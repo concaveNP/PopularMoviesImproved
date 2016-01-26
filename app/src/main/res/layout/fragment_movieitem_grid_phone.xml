@@ -40,7 +40,7 @@
         android:id="@+id/main_favorite_movies_GridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="2"/>
+        android:numColumns="@integer/number_of_columns"/>
 
 </ViewFlipper>
 
