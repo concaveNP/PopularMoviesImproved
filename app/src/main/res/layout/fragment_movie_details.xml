@@ -29,6 +29,21 @@
              app:layout_behavior="@string/appbar_scrolling_view_behavior"
              tools:context="com.concavenp.nanodegree.popularmoviesimproved.MovieDetailsFragment">
 
-    <include layout="@layout/content_movie_details"/>
+    <ViewFlipper
+        android:id="@+id/fragment_movie_ViewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/fragment_movie_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/fab_margin"
+            android:text="@string/blank_details_string"/>
+
+        <include layout="@layout/content_movie_details"/>
+
+    </ViewFlipper>
 
 </FrameLayout>

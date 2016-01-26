@@ -41,6 +41,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -60,6 +61,7 @@ import java.text.DecimalFormat;
  * Reference:
  * - http://www.grokkingandroid.com/adding-action-items-from-within-fragments/
  * - http://android-developers.blogspot.com/2012/02/share-with-intents.html
+ * - http://developer.android.com/training/sharing/send.html
  */
 public class MovieDetailsFragment extends Fragment {
 
@@ -73,7 +75,9 @@ public class MovieDetailsFragment extends Fragment {
 
     private ImageButton mFavoriteButton;
 
-    private MovieItems.MovieItem mModel;
+    private ViewFlipper mFlipper;
+
+    private MovieItems.MovieItem mModel = null;
 
     private TrailersCard mTrailersCard;
 
@@ -123,8 +127,10 @@ public class MovieDetailsFragment extends Fragment {
             String json = getArguments().getString(ARG_MOVIE_ITEM);
 
             // Translate JSON into GSON object
-            Gson gson = new Gson();
-            mModel = gson.fromJson(json, MovieItems.MovieItem.class);
+            if (json != null) {
+                Gson gson = new Gson();
+                mModel = gson.fromJson(json, MovieItems.MovieItem.class);
+            }
 
         }
 
@@ -140,18 +146,18 @@ public class MovieDetailsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
+        // Save off the flipper for use in decided which view to show
+        mFlipper = (ViewFlipper) view.findViewById(R.id.fragment_movie_ViewFlipper);
+
+        return view;
     }
 
     @Override
     public void onStart() {
-        super.onStart();
 
-        // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
+        super.onStart();
 
         Bundle args = getArguments();
 
@@ -172,7 +178,12 @@ public class MovieDetailsFragment extends Fragment {
             // Set article based on saved instance state defined during onCreateView
             updateMovieDetailInfo(mModel);
 
+        } else {
+            // There is no data to display so tell the user to choose something
+            mFlipper.setDisplayedChild(mFlipper.indexOfChild(mFlipper.findViewById(R.id.fragment_movie_TextView)));
+            setMenuVisibility(false);
         }
+
     }
 
     @Override
@@ -220,6 +231,15 @@ public class MovieDetailsFragment extends Fragment {
     public void updateMovieDetailInfo(MovieItems.MovieItem item) {
 
         mModel = item;
+
+        // If there is model data then show the details otherwise tell the user to choose something
+        if (mModel != null) {
+            mFlipper.setDisplayedChild(mFlipper.indexOfChild(mFlipper.findViewById(R.id.content_movie_FrameLayout)));
+            setMenuVisibility(true);
+        } else {
+            mFlipper.setDisplayedChild(mFlipper.indexOfChild(mFlipper.findViewById(R.id.fragment_movie_TextView)));
+            setMenuVisibility(false);
+        }
 
         // Allow marking this movie as a favorite
         mFavoriteButton = (ImageButton) getActivity().findViewById(R.id.imageButton);

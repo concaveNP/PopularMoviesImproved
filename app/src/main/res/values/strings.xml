@@ -72,6 +72,7 @@
     <string name="default_sorting_preference">@string/popularity_title</string>
     <string name="default_sorting_preference_value">@string/popularity_title_value</string>
     <string name="share_trailer_item">Share Trailer</string>
+    <string name="blank_details_string">There is no movie details to display.\nPlease choose a movie.</string>
 
     <string-array name="movie_sorting_preference_titles">
         <item>@string/popularity_title</item>
