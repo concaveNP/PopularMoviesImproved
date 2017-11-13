@@ -29,6 +29,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -136,7 +137,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Need to display the share trailer action bar icon
         setHasOptionsMenu(true);
@@ -145,7 +146,7 @@ public class MovieDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
         // Save off the flipper for use in decided which view to show
-        mFlipper = (ViewFlipper) view.findViewById(R.id.fragment_movie_ViewFlipper);
+        mFlipper = view.findViewById(R.id.fragment_movie_ViewFlipper);
 
         return view;
     }
@@ -214,7 +215,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Convert the GSON object back to a JSON string in order to pass to the activity
@@ -244,8 +245,8 @@ public class MovieDetailsFragment extends Fragment {
         }
 
         // Allow marking this movie as a favorite
-        mFavoriteButton = (ImageButton) getActivity().findViewById(R.id.imageButton);
-        mFavoriteButton.setTag(new Boolean(false));
+        mFavoriteButton = getActivity().findViewById(R.id.imageButton);
+        mFavoriteButton.setTag(Boolean.FALSE);
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -275,11 +276,11 @@ public class MovieDetailsFragment extends Fragment {
         // Spawn off thread to retrieve data from the DB to correctly populate this movie as a favorite
         new LoadSearchTask().execute(mModel.getId());
 
-        ImageView posterImageView = (ImageView) getActivity().findViewById(R.id.poster_ImageView);
-        TextView titleTextView = (TextView) getActivity().findViewById(R.id.title_TextView);
-        TextView popularityTextView = (TextView) getActivity().findViewById(R.id.popularity_TextView);
-        TextView votesTextView = (TextView) getActivity().findViewById(R.id.votes_TextView);
-        TextView synopsisTextView = (TextView) getActivity().findViewById(R.id.synopsis_TextView);
+        ImageView posterImageView = getActivity().findViewById(R.id.poster_ImageView);
+        TextView titleTextView = getActivity().findViewById(R.id.title_TextView);
+        TextView popularityTextView = getActivity().findViewById(R.id.popularity_TextView);
+        TextView votesTextView = getActivity().findViewById(R.id.votes_TextView);
+        TextView synopsisTextView = getActivity().findViewById(R.id.synopsis_TextView);
 
         // Get the movie poster UID from the GSON object
         String posterURL = getResources().getString(R.string.base_url_image_retrieval) + mModel.getPoster_path();
@@ -317,12 +318,12 @@ public class MovieDetailsFragment extends Fragment {
         synopsisTextView.setText(mModel.getOverview());
 
         // Make the web request for trailer data
-        mTrailersCard = (TrailersCard) getActivity().findViewById(R.id.trailers_cardview);
+        mTrailersCard = getActivity().findViewById(R.id.trailers_cardview);
         mTrailersCard.removeAllViews();
         mTrailersCard.requestTrailersData(mModel.getId());
 
         // Make the web request for reviews data
-        ReviewsCard reviewsCard = (ReviewsCard) getActivity().findViewById(R.id.reviews_cardview);
+        ReviewsCard reviewsCard = getActivity().findViewById(R.id.reviews_cardview);
         reviewsCard.removeAllViews();
         reviewsCard.requestReviewsData(mModel.getId());
     }
@@ -410,7 +411,7 @@ public class MovieDetailsFragment extends Fragment {
             if ((cursor != null) && (cursor.getCount() > 0)) {
 
                 // Yes, this is a favorite
-                mFavoriteButton.setTag(new Boolean(true));
+                mFavoriteButton.setTag(Boolean.TRUE);
 
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.
@@ -419,7 +420,7 @@ public class MovieDetailsFragment extends Fragment {
             } else {
 
                 // No, this is NOT a favorite
-                mFavoriteButton.setTag(new Boolean(false));
+                mFavoriteButton.setTag(Boolean.FALSE);
 
                 // Set the URL of the image that should be loaded into this view, and
                 // specify the ImageLoader that will be used to make the request.

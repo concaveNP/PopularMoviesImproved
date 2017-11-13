@@ -81,7 +81,7 @@ public class MovieReviewsActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
         mRequestQueue = Volley.newRequestQueue(this);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.reviews_RecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.reviews_RecyclerView);
         mAdapter = new ReviewsAdapter();
         recyclerView.setAdapter(mAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

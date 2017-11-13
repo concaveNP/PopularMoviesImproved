@@ -76,6 +76,7 @@
 
     <string name="default_sorting_preference">@string/popularity_title</string>
     <string name="default_sorting_preference_value">@string/popularity_title_value</string>
+    <string name="content_movie_details_favorite_button">The star button allows you to mark this movie as a favorite</string>
 
     <string-array name="movie_sorting_preference_titles">
         <item>@string/popularity_title</item>

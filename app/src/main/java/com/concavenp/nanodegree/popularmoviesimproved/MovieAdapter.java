@@ -74,9 +74,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
         imageView.setAdjustViewBounds(true);
         imageView.setClickable(true);
 
-        ViewHolder viewHolder = new ViewHolder(imageView);
-
-        return viewHolder;
+        return new ViewHolder(imageView);
     }
 
     @Override

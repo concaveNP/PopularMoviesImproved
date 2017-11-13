@@ -113,7 +113,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_below="@+id/votes_TextView"
                     android:background="#00ffffff"
-                    android:src="@android:drawable/btn_star"/>
+                    android:src="@android:drawable/btn_star"
+                    android:contentDescription="@string/content_movie_details_favorite_button" />
 
             </RelativeLayout>
 

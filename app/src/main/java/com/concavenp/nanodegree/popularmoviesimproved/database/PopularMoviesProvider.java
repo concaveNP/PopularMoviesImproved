@@ -31,6 +31,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -58,7 +59,7 @@ public class PopularMoviesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         String sort;
 
@@ -93,7 +94,7 @@ public class PopularMoviesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
 
         switch (ourUriMatcher.match(uri)) {
             case PopularMoviesContract.FAVORITES_DIR: {
@@ -111,24 +112,21 @@ public class PopularMoviesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
 
         Uri result = null;
 
         String table;
-        String column;
 
         SQLiteDatabase db = mPopularMoviesDatabase.getWritableDatabase();
 
         switch (ourUriMatcher.match(uri)) {
             case PopularMoviesContract.FAVORITES_DIR: {
                 table = PopularMoviesContract.DB_FAVORITES_TABLE;
-                column = PopularMoviesContract.FavoritesColumns._ID;
                 break;
             }
             case PopularMoviesContract.FAVORITES_ITEM: {
                 table = PopularMoviesContract.DB_FAVORITES_TABLE;
-                column = PopularMoviesContract.FavoritesColumns._ID;
                 break;
             }
             default: {
@@ -152,7 +150,7 @@ public class PopularMoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
 
         String where;
         String table;
@@ -193,10 +191,9 @@ public class PopularMoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String where;
         String table;
-        String id;
 
         switch (ourUriMatcher.match(uri)) {
             case PopularMoviesContract.FAVORITES_DIR: {
@@ -204,7 +201,6 @@ public class PopularMoviesProvider extends ContentProvider {
                 // So we count updated rows
                 where = selection;
                 table = PopularMoviesContract.DB_FAVORITES_TABLE;
-                id = PopularMoviesContract.FavoritesColumns._ID;
 
                 break;
             }
@@ -213,7 +209,6 @@ public class PopularMoviesProvider extends ContentProvider {
 
                 where = PopularMoviesContract.FavoritesColumns._ID + "=" + parseId + (TextUtils.isEmpty(selection) ? "" : " and ( " + selection + " )");
                 table = PopularMoviesContract.DB_FAVORITES_TABLE;
-                id = PopularMoviesContract.FavoritesColumns._ID;
 
                 break;
             }

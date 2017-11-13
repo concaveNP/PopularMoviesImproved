@@ -33,6 +33,7 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:clickable="true"
-        android:scaleType="fitStart"/>
+        android:scaleType="fitStart"
+        android:focusable="true" />
 
 </LinearLayout>

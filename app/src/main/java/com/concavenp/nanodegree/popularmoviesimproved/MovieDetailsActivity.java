@@ -56,7 +56,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_movie_details);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.movie_details_toolbar);
+        Toolbar toolbar = findViewById(R.id.movie_details_toolbar);
         setSupportActionBar(toolbar);
 
         // Don't show a title (check for null via lint)
@@ -75,7 +75,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         MovieItems.MovieItem item = gson.fromJson(mParam1, MovieItems.MovieItem.class);
 
         // Get the movie backdrop UID from the GSON object
-        ImageView backdropImageView = (ImageView) findViewById(R.id.movie_details_backdrop);
+        ImageView backdropImageView = findViewById(R.id.movie_details_backdrop);
         String backdropURL = getResources().getString(R.string.base_url_backdrop_image_retrieval) + item.getBackdrop_path();
         Picasso.with(this).load(backdropURL).into(backdropImageView);
 
