@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
@@ -88,8 +89,6 @@ public class MovieListingFragment extends Fragment implements android.support.v4
      *
      */
     private String mSortOrder;
-    private RecyclerView mRecyclerView;
-    private GridView mGridView;
     private ViewFlipper mFlipper;
     /**
      * The Adapter which will be used to populate the GridView with Views.
@@ -158,12 +157,12 @@ public class MovieListingFragment extends Fragment implements android.support.v4
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Set the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movieitem_grid, container, false);
 
-        mFlipper = (ViewFlipper) view.findViewById(R.id.movies_ViewFlipper);
+        mFlipper = view.findViewById(R.id.movies_ViewFlipper);
 
         //////////////////////////////////////////
         // view 1 of 2 in the flipper - the favorite movies
@@ -173,31 +172,31 @@ public class MovieListingFragment extends Fragment implements android.support.v4
         mFavoritesAdapter = new SimpleCursorAdapter(getActivity(), R.layout.favorites_item, null, FROM, TO, 0);
         VIEW_BINDER.setListener(mListener);
         mFavoritesAdapter.setViewBinder(VIEW_BINDER);
-        mGridView = (GridView) mFlipper.findViewById(R.id.main_favorite_movies_GridView);
+        GridView gridView = mFlipper.findViewById(R.id.main_favorite_movies_GridView);
 
         // Set the adapter
-        mGridView.setAdapter(mFavoritesAdapter);
+        gridView.setAdapter(mFavoritesAdapter);
 
         //////////////////////////////////////////
         // view 2 of 2 in the flipper - the popular/voted movies
         //////////////////////////////////////////
 
-        mRecyclerView = (RecyclerView) mFlipper.findViewById(R.id.main_Movies_GridView);
+        RecyclerView recyclerView = mFlipper.findViewById(R.id.main_Movies_GridView);
         mAdapter = new MovieAdapter(mListener);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.number_of_columns));
-        mRecyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutManager(gridLayoutManager);
         mScrollListener = new EndlessRecyclerOnScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 requestData(current_page);
             }
         };
-        mRecyclerView.addOnScrollListener(mScrollListener);
+        recyclerView.addOnScrollListener(mScrollListener);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
         //////////////////////////////////////////
 

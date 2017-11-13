@@ -61,9 +61,7 @@ class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
         View result = inflater.inflate(R.layout.review_item, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(result);
-
-        return viewHolder;
+        return new ViewHolder(result);
     }
 
     @Override
@@ -79,11 +77,11 @@ class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
         ReviewItems.ReviewItem item = mReviewsItems.get(position);
 
         // Set the author of the review
-        TextView authorTextView = (TextView) view.findViewById(R.id.author_TextView);
+        TextView authorTextView = view.findViewById(R.id.author_TextView);
         authorTextView.setText(item.getAuthor());
 
         // Set the content of the review
-        TextView contentTextView = (TextView) view.findViewById(R.id.content_TextView);
+        TextView contentTextView = view.findViewById(R.id.content_TextView);
         contentTextView.setText(item.getContent());
     }
 

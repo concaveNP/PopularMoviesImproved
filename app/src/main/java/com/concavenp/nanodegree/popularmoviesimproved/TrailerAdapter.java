@@ -24,6 +24,7 @@
 package com.concavenp.nanodegree.popularmoviesimproved;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,8 +92,9 @@ public class TrailerAdapter extends ArrayAdapter<TrailerItems.TrailerItem> {
         this.mModel = model;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         Log.d(TAG, "Position: " + position);
 
         View result;
@@ -107,7 +109,7 @@ public class TrailerAdapter extends ArrayAdapter<TrailerItems.TrailerItem> {
         }
 
         // Set the title of the trailer
-        TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
+        TextView textView = result.findViewById(R.id.trailer_preview_name_TextView);
         String title = getModelItem(position).getName();
         if (title != null) {
             textView.setText(title);

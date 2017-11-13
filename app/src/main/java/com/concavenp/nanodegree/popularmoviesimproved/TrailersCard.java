@@ -74,7 +74,7 @@ public class TrailersCard extends CardView {
      * Allows for the clearing of all data within the CardView.
      */
     public void removeAllViews() {
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
+        LinearLayout linearLayout = findViewById(R.id.trailers_list);
         linearLayout.removeAllViews();
 
         // Clear the first trailer
@@ -127,11 +127,11 @@ public class TrailersCard extends CardView {
      * Processes the response back from the web request.  It will dynamically add views to the
      * card view for display.
      *
-     * @param trailerItems
+     * @param trailerItems - The list of trailers to be added
      */
     private void processResponse(TrailerItems trailerItems) {
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.trailers_list);
+        LinearLayout linearLayout = findViewById(R.id.trailers_list);
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -152,12 +152,12 @@ public class TrailersCard extends CardView {
             };
 
             // Add a listener for clicks
-            ImageButton imageButton = (ImageButton) result.findViewById(R.id.play_ImageButton);
+            ImageButton imageButton = result.findViewById(R.id.play_ImageButton);
             imageButton.setTag(item.getKey());
             imageButton.setOnClickListener(listener);
 
             // Set the title of the trailer also add a listener for clicks
-            TextView textView = (TextView) result.findViewById(R.id.trailer_preview_name_TextView);
+            TextView textView = result.findViewById(R.id.trailer_preview_name_TextView);
             String title = item.getName();
             textView.setTag(item.getKey());
             textView.setOnClickListener(listener);

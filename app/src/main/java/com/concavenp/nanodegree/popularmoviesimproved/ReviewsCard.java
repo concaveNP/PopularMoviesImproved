@@ -76,11 +76,11 @@ public class ReviewsCard extends CardView {
      * Allows for the clearing of all data within the CardView.
      */
     public void removeAllViews() {
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
+        LinearLayout linearLayout = findViewById(R.id.short_review_list);
         linearLayout.removeAllViews();
 
         // The button is "GONE" by default, so make it so
-        Button reviewsButton = (Button) findViewById(R.id.reviews_Button);
+        Button reviewsButton = findViewById(R.id.reviews_Button);
         reviewsButton.setVisibility(GONE);
     }
 
@@ -138,7 +138,7 @@ public class ReviewsCard extends CardView {
 
         Log.d(TAG, "total number of reviews: " + reviewItems.getTotal_results());
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.short_review_list);
+        LinearLayout linearLayout = findViewById(R.id.short_review_list);
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -165,18 +165,18 @@ public class ReviewsCard extends CardView {
             View result = inflater.inflate(R.layout.review_item, linearLayout, false);
 
             // Set the author of the review
-            TextView authorTextView = (TextView) result.findViewById(R.id.author_TextView);
+            TextView authorTextView = result.findViewById(R.id.author_TextView);
             authorTextView.setText(item.getAuthor());
 
             // Set the content of the review
-            TextView contentTextView = (TextView) result.findViewById(R.id.content_TextView);
+            TextView contentTextView = result.findViewById(R.id.content_TextView);
             String content = item.getContent();
             if (content.length() > 200) {
                 content = content.substring(0, 200);
                 showMoreReviewsButton = true;
 
                 // Show the ellipsis text in order to signify data displayed is only partial
-                TextView ellipsisTextView = (TextView) result.findViewById(R.id.ellipsis_TextView);
+                TextView ellipsisTextView = result.findViewById(R.id.ellipsis_TextView);
                 ellipsisTextView.setVisibility(VISIBLE);
             }
             contentTextView.setText(content);
@@ -186,7 +186,7 @@ public class ReviewsCard extends CardView {
 
         if (showMoreReviewsButton) {
 
-            Button reviewsButton = (Button) findViewById(R.id.reviews_Button);
+            Button reviewsButton = findViewById(R.id.reviews_Button);
 
             // The button is "GONE" by default, so make it visible
             reviewsButton.setVisibility(VISIBLE);
